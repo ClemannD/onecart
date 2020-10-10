@@ -1,0 +1,19 @@
+name: PR Build Check
+on: push
+jobs:
+  pr-build-check:
+    name: Build Angular
+    runs-on: ubuntu-latest
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache Node Modules
+        uses: c-hive/gha-npm-cache@v1
+
+      - name: Install Depenedencies
+        run: npm install
+
+      - name: Build App
+        run: npm run build:prod
