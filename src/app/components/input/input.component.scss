@@ -1,0 +1,51 @@
+@import 'src/theme/variables.scss';
+
+.app-input {
+    margin-bottom: 2.5rem;
+
+    ion-label.label-stacked.sc-ion-label-ios-h {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: $black;
+    }
+
+    ion-input {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        height: 4rem;
+        border: 1px solid $grey-blue-light;
+        border-radius: 5px;
+        --padding-start: 1rem !important;
+        --placeholder-color: #9ba5ba !important;
+        --placeholder-opacity: 1;
+        box-shadow: $shadow-light;
+
+        &.ion-invalid.ion-touched.has-value {
+            border-color: $red;
+            --background: $red-light;
+        }
+        &.has-value {
+            border-color: $grey-blue;
+        }
+        &.has-focus {
+            border: 1px solid $blue;
+        }
+        &.disabled {
+            background-color: $grey-lightest !important;
+            --placeholder-color: #7183aa !important;
+
+            &.has-value {
+                --color: #000000;
+
+                .native-input.sc-ion-input-ios {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .input-error {
+        color: $red;
+        font-size: 1.4rem;
+    }
+}

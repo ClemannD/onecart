@@ -10,17 +10,101 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "~@ionic/angular/css/core.css";
+@import '~@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-@import "~@ionic/angular/css/normalize.css";
-@import "~@ionic/angular/css/structure.css";
-@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
 @import '~@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/text-transformation.css";
-@import "~@ionic/angular/css/flex-utils.css";
+@import '~@ionic/angular/css/padding.css';
+@import '~@ionic/angular/css/float-elements.css';
+@import '~@ionic/angular/css/text-alignment.css';
+@import '~@ionic/angular/css/text-transformation.css';
+@import '~@ionic/angular/css/flex-utils.css';
+
+@import 'theme/typography.scss';
+@import 'src/theme/variables.scss';
+
+html {
+    /* 1rem = 10px */
+    font-size: 62.5%;
+}
+body {
+    font-size: 1.6rem;
+}
+
+app-input,
+app-button {
+    display: block;
+}
+
+ion-content {
+    --padding-bottom: 3rem;
+}
+
+ion-modal.auto-height {
+    --height: auto;
+    --border-radius: 0;
+
+    &.sc-ion-modal-ios-h {
+        align-items: flex-end;
+    }
+
+    .modal-wrapper {
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .ion-page {
+        position: relative;
+        display: block;
+        contain: content;
+
+        .inner-content {
+            overflow: auto;
+            padding: 3rem 2rem 2rem;
+        }
+    }
+}
+
+.select-wider-popover {
+    --width: 95%;
+    --max-width: 350px;
+}
+
+.popover-content.sc-ion-popover-ios {
+    // border: 1px solid #1b52b7;
+}
+
+.native-input[disabled].sc-ion-input-ios {
+    opacity: 1;
+}
+
+ion-item {
+    --inner-padding-start: 2rem;
+    --padding-end: 0;
+    --padding-start: 0;
+    --border-color: #ffffff;
+    --color: #7183aa;
+    --color-activated: #000000;
+    --color-focused: #000000;
+    --color-hover: #000000;
+    --background-hover: #ffffff;
+
+    &.item-radio-checked {
+        color: $black;
+    }
+}
+
+ion-label.sc-ion-label-ios-h {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: $black;
+}
+
+ion-toolbar {
+    --border-color: #ffffff;
+}

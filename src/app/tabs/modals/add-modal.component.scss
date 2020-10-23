@@ -1,0 +1,61 @@
+@import 'src/theme/variables';
+
+.add-modal-body {
+    color: $black;
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 2.5rem;
+    }
+
+    .add-button {
+        margin-bottom: 1.5rem;
+    }
+
+    .cost-input {
+        .app-input {
+            // margin-bottom: 1rem;
+        }
+    }
+
+    .cost-controls {
+        display: flex;
+        justify-content: space-between;
+        margin-top: -1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .category-icons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        cursor: pointer;
+        margin-top: 1rem;
+        border: 1px solid $grey-blue;
+        border-radius: 5px;
+        padding: 1rem 0;
+        margin: 1rem 0 2rem;
+        box-shadow: $shadow-light;
+
+        &.has-error {
+            margin-bottom: 0.5rem;
+        }
+
+        ion-icon {
+            margin: 1rem;
+            font-size: 3rem;
+            color: $grey;
+
+            &:hover,
+            &.selected {
+                color: $blue;
+            }
+        }
+    }
+
+    .category-icons-error {
+        color: $red;
+        font-size: 1.4rem;
+        margin-bottom: 2rem;
+    }
+}

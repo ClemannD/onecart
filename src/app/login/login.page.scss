@@ -1,0 +1,34 @@
+@import 'src/theme/variables';
+
+ion-content {
+    --background: linear-gradient(135deg, #3187d5 0%, #1b51b6 100%);
+    --padding-start: 2rem;
+    --padding-end: 2rem;
+}
+
+.login-page-title {
+    width: 100%;
+    text-align: center;
+    color: $white;
+    padding-top: 12rem;
+    margin-bottom: 5rem;
+}
+
+.login-instructions {
+    margin-bottom: 2.5rem;
+    color: $white;
+}
+
+.login-form {
+    padding: 2rem;
+    background-color: $white;
+    box-shadow: $shadow-box-normal;
+    border-radius: $border-radius;
+    margin: auto;
+    max-width: 50rem;
+    transition: height 500ms;
+
+    .login-button {
+        margin-bottom: 2rem;
+    }
+}

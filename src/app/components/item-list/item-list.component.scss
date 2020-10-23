@@ -1,0 +1,58 @@
+@import 'src/theme/variables';
+
+.item-list {
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    background-color: $grey-lightest;
+    border-radius: 10px;
+
+    .no-items {
+        text-align: center;
+        padding: 10rem 0;
+        font-size: 2rem;
+
+        .no-items-label {
+            margin-bottom: 1rem;
+        }
+    }
+
+    .item-row {
+        width: 100%;
+        height: 4rem;
+        display: flex;
+
+        &:not(:last-of-type) {
+            border-bottom: 1px solid $grey-light;
+        }
+
+        .item-row-left {
+            display: flex;
+            flex-grow: 2;
+            align-items: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+
+            ion-icon {
+                font-size: 1.8rem;
+                color: $blue;
+                margin-right: 1rem;
+            }
+        }
+
+        .item-row-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            padding-left: 2rem;
+            font-size: 1.8rem;
+            color: $blue;
+            cursor: pointer;
+
+            .edit-button {
+                margin-left: 1.5rem;
+                font-size: 1.2rem;
+                color: $black;
+            }
+        }
+    }
+}

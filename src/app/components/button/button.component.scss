@@ -1,0 +1,53 @@
+@import 'src/theme/variables.scss';
+
+ion-button {
+    --border-radius: 5px;
+    margin: 0;
+    box-shadow: $shadow-light;
+    height: 4rem;
+
+    font-size: 1.6rem;
+    font-weight: 400;
+    --transition: 10ms background;
+
+    &.primary:not(.outline) {
+        --background: linear-gradient(135deg, #2d7ccf 0%, #1b52b7 100%);
+        --background-hover: linear-gradient(135deg, #6494c7 0%, #3e68b5 100%);
+    }
+
+    &.clear {
+        height: 2rem;
+        box-shadow: none !important;
+    }
+
+    // &.primary-outline {
+    //     color: $blue;
+    //     --background: #ffffff;
+    //     --background-hover: #1b52b7;
+    //     border: 1px solid $blue;
+    //     border-radius: 5px;
+
+    //     &:hover {
+    //         color: $white;
+    //     }
+    // }
+
+    &.primary.clear {
+        color: $blue;
+        --color-hover: $blue-light;
+        --background: $white;
+        --background-hover: $white;
+    }
+
+    &.secondary.clear {
+        color: $grey-blue;
+        --color-hover: $grey;
+        --background: $white;
+        --background-hover: $white;
+    }
+
+    &.button-small {
+        height: 3rem;
+        font-size: 1.3rem;
+    }
+}

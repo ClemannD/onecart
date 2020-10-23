@@ -1,0 +1,11 @@
+<ion-content [fullscreen]="false">
+    <div class="categories-horizontal-viewport">
+        <div
+            *ngFor="let category of (categories$ | async)"
+            class="category-wrapper"
+            [id]="category.categoryRoute"
+        >
+            <category [category]="category"></category>
+        </div>
+    </div>
+</ion-content>

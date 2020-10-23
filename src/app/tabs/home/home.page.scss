@@ -1,0 +1,54 @@
+@import 'src/theme/variables';
+
+ion-content {
+    --padding-top: 3rem;
+    --padding-start: 2rem;
+    --padding-end: 2rem;
+}
+
+.home-tab {
+    padding: 2.5rem 2rem 4rem !important;
+
+    .spinner {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .date {
+        margin: 0;
+    }
+
+    .title {
+        margin-top: 0;
+        margin-bottom: 2rem;
+    }
+
+    .home-page-wrapper {
+        max-width: 400px;
+        margin: auto;
+
+        info-box {
+            display: block;
+            margin-bottom: 4.5rem;
+
+            .data-points {
+                margin-top: 2rem;
+            }
+        }
+
+        section-label {
+            display: block;
+            margin-bottom: 2rem;
+        }
+
+        ion-grid {
+            --ion-grid-padding: 0;
+            margin: -1rem;
+        }
+
+        ion-col {
+            --ion-grid-column-padding: 1rem;
+        }
+    }
+}

@@ -1,1 +1,23 @@
+@import 'src/theme/variables';
 
+ion-tab-bar {
+    height: 6rem;
+    --border: none;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+
+    .add-button-circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $blue-gradient;
+        height: 4.6rem;
+        width: 4.6rem;
+        border-radius: 25px;
+        box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.4);
+
+        ion-icon {
+            font-size: 2rem;
+            color: $white;
+        }
+    }
+}
