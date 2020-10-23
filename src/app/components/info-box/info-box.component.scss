@@ -1,0 +1,24 @@
+@import 'src/theme/variables';
+
+.info-box {
+    width: 100%;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: $shadow-box-dark;
+    background: $blue-gradient;
+    color: $white;
+
+    .data-points {
+        display: flex;
+        justify-content: space-between;
+
+        .data-point {
+            text-align: center;
+            max-width: 20%;
+
+            .data-value {
+                font-size: 2.4rem;
+            }
+        }
+    }
+}

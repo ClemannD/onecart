@@ -1,0 +1,15 @@
+@import 'src/theme/variables';
+
+.categories-horizontal-viewport {
+    scroll-snap-type: x mandatory;
+    display: flex;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+
+    .category-wrapper {
+        min-width: 100vw;
+        height: 100vh;
+        scroll-snap-align: start;
+        padding: 2rem;
+    }
+}

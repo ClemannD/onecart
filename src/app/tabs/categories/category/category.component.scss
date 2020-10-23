@@ -1,0 +1,22 @@
+@import 'src/theme/variables';
+
+.category {
+    .title {
+        margin-bottom: 3rem;
+
+        ion-icon {
+            font-size: 2.5rem;
+            margin-left: 1rem;
+            color: $grey-blue;
+        }
+    }
+
+    info-box {
+        display: block;
+        margin-bottom: 4.5rem;
+    }
+
+    .edit-button {
+        margin-top: 2rem;
+    }
+}

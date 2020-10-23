@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import 'variables';
+
+$font-righteous: 'Righteous', cursive;
+
+h1 {
+    font-size: 6rem;
+    font-family: $font-righteous;
+    margin: 0;
+}
+
+h3 {
+    font-size: 3.4rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+h4 {
+    font-size: 3rem;
+    margin: 0;
+}
+h5 {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin: 0;
+}
+
+h6 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    opacity: 0.45;
+    margin: 0;
+}
+
+p.p-larger {
+    font-size: 1.8rem;
+}
+
+.fw-light {
+    font-weight: 300;
+}
+
+.ta-center {
+    text-align: center;
+}

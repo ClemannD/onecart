@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "onecart-dev"
+  },
+  "targets": {
+    "onecart-dev": {
+      "hosting": {
+        "app": [
+          "onecart-dev"
+        ]
+      }
+    }
   }
 }

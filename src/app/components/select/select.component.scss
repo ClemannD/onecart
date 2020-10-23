@@ -1,0 +1,44 @@
+@import 'src/theme/variables.scss';
+
+.app-input {
+    margin-bottom: 2.5rem;
+
+    ion-label.label-stacked.sc-ion-label-ios-h {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: $black;
+    }
+
+    ion-select {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        height: 4rem;
+        border: 1px solid $grey-blue-light;
+        border-radius: 5px;
+        --padding-start: 1rem !important;
+        --padding-end: 1.5rem !important;
+        --placeholder-color: #9ba5ba;
+        --placeholder-opacity: 1;
+        box-shadow: $shadow-light;
+
+        &.ion-invalid.ion-touched.has-value {
+            border-color: $red;
+            --background: $red-light;
+        }
+        &.has-value {
+            border-color: $grey-blue;
+        }
+        &[aria-expanded='true'] {
+            border: 1px solid $blue;
+        }
+    }
+
+    .input-error {
+        color: $red;
+        font-size: 1.4rem;
+    }
+}
+
+.select-icon-inner {
+    color: $grey-blue-light !important;
+}
