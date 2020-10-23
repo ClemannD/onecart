@@ -1,12 +1,20 @@
 {
   "projects": {
-    "default": "onecart-dev"
+    "default": "onecart-dev",
+    "prod": "onecart-prod"
   },
   "targets": {
     "onecart-dev": {
       "hosting": {
         "app": [
           "onecart-dev"
+        ]
+      }
+    },
+    "onecart-prod": {
+      "hosting": {
+        "app": [
+          "onecart-prod"
         ]
       }
     }
