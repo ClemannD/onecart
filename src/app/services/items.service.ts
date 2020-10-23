@@ -11,9 +11,9 @@ export class ItemsService {
     constructor(
         @Inject(AbstractDataService) private _dataService: AbstractDataService
     ) {
-        this.items$.subscribe((_) => {
-            console.log(_);
-        });
+        // this.items$.subscribe((_) => {
+        //     console.log(_);
+        // });
     }
 
     public getItemsForCategory$(categoryKey: string): Observable<Item[]> {

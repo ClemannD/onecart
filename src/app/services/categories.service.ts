@@ -10,9 +10,9 @@ export class CategoriesService {
     constructor(
         @Inject(AbstractDataService) private _dataService: AbstractDataService
     ) {
-        this.categories$.subscribe((_) => {
-            console.log(_);
-        });
+        // this.categories$.subscribe((_) => {
+        //     console.log(_);
+        // });
     }
 
     public saveCategory(category: Category): void {
