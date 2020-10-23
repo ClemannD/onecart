@@ -1,6 +1,30 @@
 version: 2.1
 jobs:
-  build:
+  deploy-dev:
+    docker:
+      - image: cimg/node:12.16
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Build Application
+          command: npm run build:prod
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Deploy to Firebase
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting
+  deploy-prod:
     docker:
       - image: cimg/node:12.16
     working_directory: ~/repo
@@ -26,10 +50,17 @@ jobs:
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting
 
 workflows:
-  deploy-web:
+  deploy-dev:
     jobs:
-      - build:
+      - deploy-dev:
           filters:
             branches:
               only:
                 - master
+  deploy-prod:
+    jobs:
+      - deploy-prod:
+          filters:
+            branches:
+              only:
+                - production
