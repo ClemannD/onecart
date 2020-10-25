@@ -6,5 +6,6 @@ export function formatMoney(amount: number): string {
     return dollarFormatter
         .format(amount)
         .replace('.00', '')
-        .replace('.50', '.5');
+        .replace('.50', '.5')
+        .replace('$', '');
 }

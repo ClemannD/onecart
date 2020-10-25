@@ -9,7 +9,9 @@ import { CategoriesService } from 'src/app/services/categories.service';
     selector: 'category-modal',
     template: `
         <form [formGroup]="categoryFormGroup" (ngSubmit)="saveCategory()">
-            <h3>New Category</h3>
+            <h3>
+                {{ category?.categoryKey ? 'Edit Category' : 'New Category' }}
+            </h3>
             <app-input
                 inputLabel="Name"
                 placeholder="Enter Category Name"

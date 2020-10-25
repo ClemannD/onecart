@@ -23,25 +23,41 @@ import { AddModalService } from '../../modals/add-modal.service';
                         *ngFor="let dataPoint of dataPoints"
                     >
                         <div class="data-value">
-                            {{ dataPoint.dataValue | async }}
+                            <span
+                                *ngIf="dataPoint.dataLabel === 'Estimated Cost'"
+                                class="currency-symbol"
+                                >$</span
+                            >{{ dataPoint.dataValue | async }}
                         </div>
                         <h6>{{ dataPoint.dataLabel }}</h6>
                     </div>
                 </div>
             </info-box>
 
+            <div class="category-actions">
+                <app-button
+                    class="action-button"
+                    fill="outline"
+                    color="secondary"
+                    (buttonClick)="addItem()"
+                >
+                    Add Item
+                </app-button>
+                <app-button
+                    class="action-button"
+                    fill="outline"
+                    color="secondary"
+                    (buttonClick)="handleEditClick()"
+                >
+                    Edit Category
+                </app-button>
+            </div>
+
             <item-list
                 *ngIf="categoryItems$"
                 [items$]="categoryItems$"
                 (addItem)="addItem()"
             ></item-list>
-
-            <app-button
-                class="edit-button"
-                fill="clear"
-                (buttonClick)="handleEditClick()"
-                >Edit Category</app-button
-            >
         </div>
     `
 })

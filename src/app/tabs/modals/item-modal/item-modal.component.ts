@@ -10,7 +10,7 @@ import { ItemsService } from 'src/app/services/items.service';
     selector: 'item-modal',
     template: `
         <form [formGroup]="itemFormGroup" (ngSubmit)="saveItem()">
-            <h3>New Item</h3>
+            <h3>{{ item?.itemKey ? 'Edit Item' : 'New Item' }}</h3>
             <app-input
                 inputLabel="Name"
                 placeholder="Enter Item Name"
@@ -183,7 +183,7 @@ export class ItemModalComponent implements OnInit {
         } else {
             this.itemStateFormControl.setValue(ItemState.NotNeeded);
         }
-        this._modalController.dismiss();
+        this.saveItem();
     }
 
     public updateCost(costChange: number): void {

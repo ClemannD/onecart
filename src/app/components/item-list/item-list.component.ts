@@ -10,32 +10,41 @@ import { AddModalService } from 'src/app/tabs/modals/add-modal.service';
     styleUrls: ['./item-list.component.scss'],
     template: `
         <div class="item-list">
-            <div *ngIf="!(items$ | async)?.length" class="no-items">
-                <div class="no-items-label">
-                    There are no items yet in this category.
-                </div>
-                <app-button fill="clear" (buttonClick)="addItem.emit()"
-                    >Add an Item</app-button
-                >
-            </div>
-            <div class="item-row" *ngFor="let item of items$ | async">
-                <div
-                    class="item-row-left"
-                    (click)="handleItemStateToggleClick(item)"
-                >
-                    <ion-icon [name]="iconNameEnum[item.itemState]"></ion-icon>
-                    <span>{{ item.itemName }}</span>
-                </div>
-                <div class="item-row-right" (click)="handleEditItemClick(item)">
-                    <div>
-                        {{ formatMoney(item.itemCost) }}
+            <ion-spinner *ngIf="!(items$ | async)"></ion-spinner>
+            <ng-container *ngIf="!!(items$ | async)">
+                <div *ngIf="!(items$ | async)?.length" class="no-items">
+                    <div class="no-items-label">
+                        There are no items yet in this category.
                     </div>
-                    <ion-icon
-                        class="edit-button"
-                        name="ios-chevron-right"
-                    ></ion-icon>
+                    <app-button fill="clear" (buttonClick)="addItem.emit()">
+                        Add an Item
+                    </app-button>
                 </div>
-            </div>
+                <div class="item-row" *ngFor="let item of items$ | async">
+                    <div
+                        class="item-row-left"
+                        (click)="handleItemStateToggleClick(item)"
+                    >
+                        <ion-icon
+                            [name]="iconNameEnum[item.itemState]"
+                        ></ion-icon>
+                        <span>{{ item.itemName }}</span>
+                    </div>
+                    <div
+                        class="item-row-right"
+                        (click)="handleEditItemClick(item)"
+                    >
+                        <div>
+                            <span class="currency-symbol">$</span
+                            >{{ formatMoney(item.itemCost) }}
+                        </div>
+                        <ion-icon
+                            class="edit-button"
+                            name="ios-chevron-right"
+                        ></ion-icon>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     `
 })
