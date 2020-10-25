@@ -18,6 +18,12 @@
 
             .data-value {
                 font-size: 2.4rem;
+                margin-bottom: 0.5rem;
+
+                .currency-symbol {
+                    font-size: 1.4rem;
+                    margin-right: 0.2rem;
+                }
             }
         }
     }

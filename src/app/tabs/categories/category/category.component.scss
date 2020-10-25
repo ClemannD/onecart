@@ -16,7 +16,16 @@
         margin-bottom: 4.5rem;
     }
 
-    .edit-button {
-        margin-top: 2rem;
+    .category-actions {
+        display: flex;
+        margin-bottom: 2rem;
+
+        .action-button {
+            flex-basis: 50%;
+
+            &:not(:last-of-type) {
+                margin-right: 2rem;
+            }
+        }
     }
 }

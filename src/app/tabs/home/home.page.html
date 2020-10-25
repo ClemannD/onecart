@@ -16,7 +16,11 @@
             <div class="data-points">
                 <div class="data-point" *ngFor="let dataPoint of dataPoints">
                     <div class="data-value">
-                        {{ dataPoint.dataValue | async }}
+                        <span
+                            *ngIf="dataPoint.dataLabel ==='Estimated Cost'"
+                            class="currency-symbol"
+                            >$</span
+                        >{{ dataPoint.dataValue | async }}
                     </div>
                     <h6>{{ dataPoint.dataLabel }}</h6>
                 </div>

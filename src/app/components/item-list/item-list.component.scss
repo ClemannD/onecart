@@ -6,6 +6,11 @@
     background-color: $grey-lightest;
     border-radius: 10px;
 
+    ion-spinner {
+        display: block;
+        margin: 3rem auto;
+    }
+
     .no-items {
         text-align: center;
         padding: 10rem 0;
@@ -44,9 +49,14 @@
             align-items: center;
             margin-left: auto;
             padding-left: 2rem;
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: $blue;
             cursor: pointer;
+
+            .currency-symbol {
+                font-size: 1.2rem;
+                margin-right: 0.2rem;
+            }
 
             .edit-button {
                 margin-left: 1.5rem;

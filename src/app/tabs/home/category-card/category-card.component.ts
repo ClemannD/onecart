@@ -31,15 +31,13 @@ export class CategoryCardComponent implements OnInit {
 
     constructor(private _itemsService: ItemsService, private _router: Router) {}
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.estimatedCost$ = this._itemsService.getEstimatedCostForCategory$(
             this.category.categoryKey
         );
     }
 
     public handleCategoryClick(category: Category): void {
-        this._router.navigate(['tabs/categories'], {
-            fragment: category.categoryRoute
-        });
+        this._router.navigate(['tabs/categories', category.categoryRoute]);
     }
 }
