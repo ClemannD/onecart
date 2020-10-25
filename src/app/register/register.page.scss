@@ -1,11 +1,11 @@
 @import 'src/theme/variables';
 
-ion-content.login-page {
+ion-content.registration-page {
     --background: linear-gradient(135deg, #3187d5 0%, #1b51b6 100%);
     --padding-start: 2rem;
     --padding-end: 2rem;
 
-    .login-page-title {
+    .registration-page-title {
         width: 100%;
         text-align: center;
         color: $white;
@@ -13,12 +13,12 @@ ion-content.login-page {
         margin-bottom: 5rem;
     }
 
-    .login-instructions {
+    .registration-instructions {
         margin-bottom: 2.5rem;
         color: $white;
     }
 
-    .login-form {
+    .registration-form {
         padding: 2rem;
         background-color: $white;
         box-shadow: $shadow-box-normal;
@@ -28,13 +28,7 @@ ion-content.login-page {
         transition: height 500ms;
     }
 
-    .login-button {
-        margin-bottom: 2rem;
-    }
-
-    #recaptcha-container {
-        display: flex;
-        justify-content: center;
+    .registration-button {
         margin-bottom: 2rem;
     }
 }

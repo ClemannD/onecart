@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content class="login-page">
     <div class="login-page-title">
         <h1>OneCart</h1>
     </div>
@@ -8,6 +8,7 @@
         <b>Login</b> or
         <b>Register</b>
     </p>
+
     <div #loginFormBox class="login-form" [@fadeIn]>
         <form [formGroup]="loginFormGroup" (ngSubmit)="submitPhoneNumber()">
             <app-input
@@ -25,20 +26,35 @@
                 <div *ngIf="phoneNumberFormControl.errors?.required">
                     Please Enter a Phone Number
                 </div>
+
                 <div *ngIf="phoneNumberFormControl.errors?.pattern">
                     Please Enter a Valid Phone Number
                 </div>
             </app-input>
 
+            <div
+                class="spinner-container"
+                *ngIf="!(recaptchaRendered$ | async)"
+            >
+                <ion-spinner></ion-spinner>
+            </div>
+
+            <div
+                [hidden]="awaitingVerificationCode$ | async"
+                id="recaptcha-container"
+            ></div>
+
             <app-button
+                id="submit-phone-login"
                 *ngIf="!(awaitingVerificationCode$ | async)"
                 expand="block"
                 type="submit"
+                [disabled]="!(recaptchaRendered$ | async)"
             >
                 Send Code
             </app-button>
 
-            <ng-container *ngIf="(awaitingVerificationCode$ | async)">
+            <ng-container *ngIf="awaitingVerificationCode$ | async">
                 <app-input
                     inputLabel="Enter Verification Code"
                     type="text"
@@ -50,31 +66,32 @@
                     [pattern]="verificationCodeRegex"
                 >
                     <div
-                        *ngIf="verificationCodeFormControl.errors?.required 
-                            || verificationCodeFormControl.errors?.pattern"
+                        *ngIf="
+                            verificationCodeFormControl.errors?.required ||
+                            verificationCodeFormControl.errors?.pattern
+                        "
                     >
                         Please Enter your 6 Digit Verification Code
                     </div>
                 </app-input>
             </ng-container>
+            <app-button
+                *ngIf="awaitingVerificationCode$ | async"
+                class="login-button"
+                expand="block"
+                (buttonClick)="submitVerificationCode()"
+            >
+                Login
+            </app-button>
+            <app-button
+                *ngIf="awaitingVerificationCode$ | async"
+                expand="block"
+                color="secondary"
+                fill="clear"
+                (buttonClick)="cancelVerificationCode()"
+            >
+                Change Number and Resend
+            </app-button>
         </form>
-
-        <app-button
-            *ngIf="(awaitingVerificationCode$ | async)"
-            class="login-button"
-            expand="block"
-            (buttonClick)="submitVerificationCode()"
-        >
-            Login
-        </app-button>
-        <app-button
-            *ngIf="(awaitingVerificationCode$ | async)"
-            expand="block"
-            color="secondary"
-            fill="clear"
-            (buttonClick)="cancelVerificationCode()"
-        >
-            Change Number and Resend
-        </app-button>
     </div>
 </ion-content>

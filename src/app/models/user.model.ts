@@ -2,5 +2,7 @@ export interface User {
     userKey?: string;
     firstName?: string;
     lastName?: string;
-    phone?: string;
+    phoneNumber?: string;
+    email?: string;
+    refHouseholdKey?: string;
 }
