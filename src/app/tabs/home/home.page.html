@@ -2,7 +2,7 @@
     <h5 class="date">{{today}}</h5>
     <h3 class="title">Home</h3>
 
-    <div class="spinner">
+    <div class="spinner-container">
         <ion-spinner
             *ngIf="!dataPoints || !(categories$ | async)"
         ></ion-spinner>

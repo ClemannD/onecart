@@ -1,54 +1,55 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from '../models/user.model';
+import { AbstractAuthDataService } from './data-service/abstract-auth-data.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
-    private _userSubject = new BehaviorSubject<User>(null);
-    public user$ = this._userSubject.asObservable();
-
-    private _awaitingVerificationCodeSubject = new BehaviorSubject<boolean>(
-        false
+    public user$ = this._authDataService.user$;
+    public isFullyRegistered$ = this.user$.pipe(
+        map((user) => {
+            return (
+                !!user &&
+                !!user.email &&
+                !!user.phoneNumber &&
+                !!user.firstName &&
+                !!user.lastName
+            );
+        })
     );
-    public awaitingVerificationCode$ = this._awaitingVerificationCodeSubject.asObservable();
+    public awaitingVerificationCode$ = this._authDataService
+        .awaitingVerificationCode$;
+    public recaptchaRendered$ = this._authDataService.recaptchaRendered$;
 
-    constructor(private _router: Router) {
-        this.setUser({
-            userKey: 'mockKey',
-            firstName: 'Dylan',
-            lastName: 'Clemann',
-            phone: '9415807122'
-        });
+    constructor(
+        @Inject(AbstractAuthDataService)
+        private _authDataService: AbstractAuthDataService
+    ) {}
+
+    public async initializeLogin(): Promise<void> {
+        await this._authDataService.initializeLogin();
     }
 
     public submitPhoneNumber(phoneNumber: string): void {
-        this._awaitingVerificationCodeSubject.next(true);
+        this._authDataService.submitPhoneNumber(phoneNumber);
     }
 
     public cancelVerificationCode(): void {
-        this._awaitingVerificationCodeSubject.next(false);
+        this._authDataService.cancelPhoneNumber();
     }
 
     public submitVerificationCode(verificationCode: string): void {
-        console.log(`${verificationCode} submitted to login`);
-
-        this.setUser({
-            userKey: 'mockKey',
-            firstName: 'Dylan',
-            lastName: 'Clemann',
-            phone: '9415807122'
-        });
+        this._authDataService.submitPhoneVerificationCode(verificationCode);
     }
 
-    public setUser(user: User): void {
-        this._userSubject.next(user);
-        this._router.navigateByUrl('/');
+    public updateUser(user: User): void {
+        this._authDataService.updateUser(user);
     }
 
-    public isAuthenticated(): boolean {
-        return !!this._userSubject.getValue();
+    public signOut(): void {
+        return this._authDataService.signOut();
     }
 }

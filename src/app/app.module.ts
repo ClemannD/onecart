@@ -17,6 +17,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AbstractDataService } from './services/data-service/abstract-data.service';
 import { FirestoreService } from './services/data-service/firestore.service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { WindowService } from './services/window.service';
+import { AbstractAuthDataService } from './services/data-service/abstract-auth-data.service';
+import { FirebaseAuthService } from './services/data-service/firebase-auth.service';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
     declarations: [AppComponent],
@@ -30,9 +34,11 @@ import { AngularFirestore } from '@angular/fire/firestore';
             mode: 'ios'
         }),
         AppRoutingModule,
-        AngularFireModule.initializeApp(environment.firebase)
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule
     ],
     providers: [
+        WindowService,
         StatusBar,
         SplashScreen,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -42,6 +48,10 @@ import { AngularFirestore } from '@angular/fire/firestore';
         {
             provide: AbstractDataService,
             useClass: FirestoreService
+        },
+        {
+            provide: AbstractAuthDataService,
+            useClass: FirebaseAuthService
         }
     ],
     bootstrap: [AppComponent]

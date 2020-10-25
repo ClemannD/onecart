@@ -1,0 +1,98 @@
+<ion-content class="registration-page">
+    <div class="registration-page-title">
+        <h1>OneCart</h1>
+    </div>
+
+    <p class="p-larger fw-light ta-center registration-instructions">
+        Just a bit of info to get you <b>registered</b>
+    </p>
+    <div #loginFormBox class="registration-form" [@fadeIn]>
+        <form
+            [formGroup]="registrationFormGroup"
+            (ngSubmit)="submitRegistration()"
+        >
+            <app-input
+                inputLabel="First Name"
+                autocomplete="given-name"
+                maxlength="20"
+                formControlName="firstName"
+                [formControl]="firstNameFormControl"
+            >
+                <div *ngIf="firstNameFormControl.errors?.required">
+                    Please Enter your First Name
+                </div>
+                <div *ngIf="firstNameFormControl.errors?.pattern">
+                    Please Enter a valid First Name
+                </div>
+            </app-input>
+            <app-input
+                inputLabel="Last Name"
+                autocomplete="family-name"
+                maxlength="25"
+                formControlName="lastName"
+                [formControl]="lastNameFormControl"
+            >
+                <div *ngIf="lastNameFormControl.errors?.required">
+                    Please Enter your Last Name
+                </div>
+                <div *ngIf="lastNameFormControl.errors?.pattern">
+                    Please Enter a valid Last Name
+                </div>
+            </app-input>
+            <app-input
+                inputLabel="Email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                maxlength="50"
+                placeholder="you@somewhere.com"
+                formControlName="email"
+                [disabled]="(user$ | async)?.email"
+                [formControl]="emailFormControl"
+            >
+                <div *ngIf="emailFormControl.errors?.required">
+                    Please Enter an Email
+                </div>
+
+                <div *ngIf="emailFormControl.errors?.patemailtern">
+                    Please Enter a Valid Email
+                </div>
+            </app-input>
+            <app-input
+                inputLabel="Phone Number"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                maxlength="14"
+                placeholder="+1 (000) 123 4567"
+                formControlName="phoneNumber"
+                [disabled]="(user$ | async)?.phoneNumber"
+                [formControl]="phoneNumberFormControl"
+            >
+                <div *ngIf="phoneNumberFormControl.errors?.required">
+                    Please Enter a Phone Number
+                </div>
+
+                <div *ngIf="phoneNumberFormControl.errors?.pattern">
+                    Please Enter a Valid Phone Number
+                </div>
+            </app-input>
+
+            <app-button
+                class="registration-button"
+                expand="block"
+                type="submit"
+            >
+                Finish Registering
+            </app-button>
+        </form>
+        <app-button
+            expand="block"
+            (buttonClick)="signOut()"
+            fill="clear"
+            color="secondary"
+        >
+            Sign Out
+        </app-button>
+    </div>
+</ion-content>

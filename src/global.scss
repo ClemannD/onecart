@@ -70,6 +70,12 @@ ion-modal.auto-height {
     }
 }
 
+.spinner-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .select-wider-popover {
     --width: 95%;
     --max-width: 350px;
