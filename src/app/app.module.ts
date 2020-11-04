@@ -31,7 +31,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
         ReactiveFormsModule,
         FormsModule,
         IonicModule.forRoot({
-            mode: 'ios'
+            mode: 'ios',
+            animated: false
         }),
         AppRoutingModule,
         AngularFireModule.initializeApp(environment.firebase),

@@ -20,8 +20,18 @@ export class FirebaseAuthService implements AbstractAuthDataService {
     );
     public awaitingVerificationCode$ = this._awaitingVerificationCodeSubject.asObservable();
 
-    private _userSubject = new BehaviorSubject<User>(null);
-    public user$ = this._userSubject.asObservable();
+    // private _userSubject = new BehaviorSubject<User>(null);
+    // public user$ = this._userSubject.asObservable();
+    public user$ = this._angularFireAuth.authState.pipe(
+        switchMap((firebaseUser) => {
+            return this._angularFirestore
+                .collection<User>('users', (ref) =>
+                    ref.where('userKey', '==', firebaseUser.uid)
+                )
+                .valueChanges()
+                .pipe(map((users) => users[0] || null));
+        })
+    );
 
     constructor(
         private _windowService: WindowService,
@@ -29,23 +39,24 @@ export class FirebaseAuthService implements AbstractAuthDataService {
         private _angularFirestore: AngularFirestore,
         private _router: Router
     ) {
-        this._angularFireAuth.authState.subscribe(async (firebaseUser) => {
-            if (firebaseUser) {
-                const user = (
-                    await this._angularFirestore
-                        .collection<User>('users', (ref) =>
-                            ref.where('userKey', '==', firebaseUser.uid)
-                        )
-                        .valueChanges()
-                        .pipe(first())
-                        .toPromise()
-                )[0];
-
-                this._userSubject.next(user);
-            } else {
-                this._userSubject.next(null);
-            }
-        });
+        // this._angularFireAuth.authState.subscribe(async (firebaseUser) => {
+        //     if (firebaseUser) {
+        //         const user = (
+        //             await this._angularFirestore
+        //                 .collection<User>('users', (ref) =>
+        //                     ref.where('userKey', '==', firebaseUser.uid)
+        //                 )
+        //                 .valueChanges()
+        //                 .pipe(first())
+        //                 .toPromise()
+        //         )[0];
+        //         if (user) {
+        //             this._userSubject.next(user);
+        //         }
+        //     } else {
+        //         this._userSubject.next(null);
+        //     }
+        // });
     }
 
     public async initializeLogin(): Promise<void> {
@@ -88,8 +99,6 @@ export class FirebaseAuthService implements AbstractAuthDataService {
             .confirm(verificationCode)
             .then((result) => {
                 this._awaitingVerificationCodeSubject.next(false);
-                console.log(result);
-
                 this._loginUserByPhoneNumber(result.user);
             })
             .catch((error) => {
@@ -117,10 +126,12 @@ export class FirebaseAuthService implements AbstractAuthDataService {
         if (user) {
             this._router.navigateByUrl('/');
         } else {
-            this._usersCollection.doc<User>(firebaseUser.uid).set({
+            const newUser = {
                 userKey: firebaseUser.uid,
                 phoneNumber: firebaseUser.phoneNumber
-            });
+            };
+            this._usersCollection.doc<User>(firebaseUser.uid).set(newUser);
+            // this._userSubject.next(newUser);
 
             this._router.navigateByUrl('/register');
         }

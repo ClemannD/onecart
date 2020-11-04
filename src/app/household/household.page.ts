@@ -33,7 +33,6 @@ enum HouseholdPageState {
 })
 export class HouseholdPage implements OnInit, OnDestroy {
     private _userSub: Subscription;
-    private _householdNameValueChnagesSubscription: Subscription;
 
     public currentState = HouseholdPageState.Unselected;
     public householdPageState = HouseholdPageState;
@@ -90,7 +89,6 @@ export class HouseholdPage implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this._userSub.unsubscribe();
-        this._householdNameValueChnagesSubscription.unsubscribe();
     }
 
     public async handleNewHouseholdSubmit(): Promise<void> {

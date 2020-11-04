@@ -20,7 +20,7 @@ export class FirestoreService implements AbstractDataService {
 
     public household$ = this._authenticationService.user$.pipe(
         switchMap((user) => {
-            if (user) {
+            if (user?.refHouseholdKey) {
                 return this._angularFirestore
                     .collection<Household>('households', (ref) =>
                         ref.where('householdKey', '==', user.refHouseholdKey)
@@ -34,7 +34,7 @@ export class FirestoreService implements AbstractDataService {
 
     public items$ = this._authenticationService.user$.pipe(
         switchMap((user) => {
-            if (user) {
+            if (user?.refHouseholdKey) {
                 return this._angularFirestore
                     .collection<Item>('items', (ref) =>
                         ref.where('refHouseholdKey', '==', user.refHouseholdKey)
@@ -46,7 +46,7 @@ export class FirestoreService implements AbstractDataService {
     );
     public categories$ = this._authenticationService.user$.pipe(
         switchMap((user) => {
-            if (user) {
+            if (user?.refHouseholdKey) {
                 return this._angularFirestore
                     .collection<Category>('categories', (ref) =>
                         ref.where('refHouseholdKey', '==', user.refHouseholdKey)

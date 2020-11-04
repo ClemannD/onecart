@@ -26,6 +26,14 @@ ion-button {
         border-radius: 5px;
     }
 
+    &.white.clear {
+        color: $white;
+
+        &:hover {
+            color: $grey-light;
+        }
+    }
+
     &.primary.clear {
         color: $blue;
         --color-hover: $blue-light;
