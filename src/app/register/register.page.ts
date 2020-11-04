@@ -32,9 +32,7 @@ export class RegisterPage implements OnInit, OnDestroy {
         private _authentiationService: AuthenticationService,
         private _formBuilder: FormBuilder,
         private _router: Router
-    ) {}
-
-    public ngOnInit(): void {
+    ) {
         this.registrationFormGroup = this._formBuilder.group({
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
@@ -64,6 +62,8 @@ export class RegisterPage implements OnInit, OnDestroy {
         });
     }
 
+    public ngOnInit(): void {}
+
     public ngOnDestroy(): void {
         this._userSub.unsubscribe();
     }
@@ -81,7 +81,7 @@ export class RegisterPage implements OnInit, OnDestroy {
                 phoneNumber: this.phoneNumberFormControl.value
             });
 
-            this._router.navigateByUrl('/');
+            this._router.navigateByUrl('/household');
         }
     }
 
