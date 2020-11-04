@@ -71,14 +71,14 @@ export class ItemListComponent {
         private _addModalService: AddModalService
     ) {}
 
-    public handleItemStateToggleClick(item: Item): void {
+    public async handleItemStateToggleClick(item: Item): Promise<void> {
         item.itemState =
             item.itemState === ItemState.NotNeeded ||
             item.itemState === ItemState.InStock
                 ? ItemState.OutOfStock
                 : ItemState.InStock;
 
-        this._itemsService.saveItem(item);
+        await this._itemsService.saveItem(item);
     }
 
     public handleEditItemClick(item: Item): void {

@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { phoneNumberRegex } from '../constants/common';
-import { User } from '../models/user.model';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
@@ -45,12 +44,22 @@ export class RegisterPage implements OnInit, OnDestroy {
 
         this._userSub = this.user$.subscribe((user) => {
             if (user) {
-                this.registrationFormGroup.reset({
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    phoneNumber: user.phoneNumber
-                });
+                if (
+                    !!user &&
+                    !!user.email &&
+                    !!user.phoneNumber &&
+                    !!user.firstName &&
+                    !!user.lastName
+                ) {
+                    this._router.navigateByUrl('/tabs/home');
+                } else {
+                    this.registrationFormGroup.reset({
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        phoneNumber: user.phoneNumber
+                    });
+                }
             }
         });
     }

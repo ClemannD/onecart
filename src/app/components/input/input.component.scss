@@ -19,6 +19,7 @@
         --placeholder-color: #9ba5ba !important;
         --placeholder-opacity: 1;
         box-shadow: $shadow-light;
+        color: $black;
 
         &.ion-invalid.ion-touched.has-value {
             border-color: $red;
@@ -47,5 +48,16 @@
     .input-error {
         color: $red;
         font-size: 1.4rem;
+    }
+
+    &.light-mode {
+        ion-label.label-stacked.sc-ion-label-ios-h {
+            color: $white;
+        }
+
+        ion-input {
+            box-shadow: none;
+            --background: #ffffff;
+        }
     }
 }

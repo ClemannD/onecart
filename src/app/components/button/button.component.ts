@@ -10,20 +10,22 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
             [type]="type"
             [size]="size"
             [fill]="fill"
-            [disabled]="disabled"
+            [disabled]="disabled || submitting"
             (click)="handleButtonClick()"
         >
-            <ng-content></ng-content>
+            <ion-spinner *ngIf="submitting" name="lines-small"></ion-spinner>
+            <ng-content *ngIf="!submitting"></ng-content>
         </ion-button>
     `
 })
 export class ButtonComponent {
+    @Input() public submitting = false;
     @Input() public disabled = false;
     @Input() public isBlock = true;
     @Input() public size: 'small' | 'large';
     @Input() public fill: 'solid' | 'outline' | 'clear' = 'solid';
     @Input() public type = 'button';
-    @Input() public color = 'primary';
+    @Input() public color: 'primary' | 'white' | 'secondary' = 'primary';
     @Output() public buttonClick = new EventEmitter();
 
     public handleButtonClick(): void {
