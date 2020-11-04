@@ -160,7 +160,7 @@ export class ItemModalComponent implements OnInit {
         });
     }
 
-    public saveItem(): void {
+    public async saveItem(): Promise<void> {
         this.itemNameFormControl.markAsTouched();
         this.itemCategoryFormControl.markAsTouched();
 
@@ -172,18 +172,18 @@ export class ItemModalComponent implements OnInit {
                 itemCost: this.itemCostModel,
                 itemState: this.itemStateFormControl.value
             };
-            this._itemsService.saveItem(item);
+            await this._itemsService.saveItem(item);
             this.closeModal();
         }
     }
 
-    public updateItemState(currentState: ItemState): void {
+    public async updateItemState(currentState: ItemState): Promise<void> {
         if (currentState === ItemState.NotNeeded) {
             this.itemStateFormControl.setValue(ItemState.OutOfStock);
         } else {
             this.itemStateFormControl.setValue(ItemState.NotNeeded);
         }
-        this.saveItem();
+        await this.saveItem();
     }
 
     public updateCost(costChange: number): void {

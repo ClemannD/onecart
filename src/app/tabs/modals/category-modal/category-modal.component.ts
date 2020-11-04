@@ -79,12 +79,12 @@ export class CategoryModalComponent implements OnInit {
         });
     }
 
-    public saveCategory(): void {
+    public async saveCategory(): Promise<void> {
         this.categoryNameFormControl.markAsTouched();
         this.categoryIconModelError = !this.categoryIconModel;
 
         if (this.categoryFormGroup.valid && !this.categoryIconModelError) {
-            this._categoriesService.saveCategory({
+            await this._categoriesService.saveCategory({
                 ...this.category,
                 categoryName: this.categoryNameFormControl.value,
                 categoryIcon: this.categoryIconModel

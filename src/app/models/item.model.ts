@@ -4,6 +4,7 @@ export interface Item {
     itemCost?: number;
     itemState?: ItemState;
     refCategoryKey?: string;
+    refHouseholdKey?: string;
 }
 
 export enum ItemState {

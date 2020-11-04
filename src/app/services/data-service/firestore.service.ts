@@ -4,18 +4,63 @@ import { Category } from 'src/app/models/category.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Item, ItemState } from 'src/app/models/item.model';
 import { AbstractDataService } from './abstract-data.service';
+import { AuthenticationService } from '../authentication.service';
+import { map, switchMap } from 'rxjs/operators';
+import { Household } from 'src/app/models/household.model';
 
 @Injectable()
 export class FirestoreService implements AbstractDataService {
     private _itemsCollection = this._angularFirestore.collection<Item>('items');
-    private _categoriesCollection = this._angularFirestore.collection(
+    private _categoriesCollection = this._angularFirestore.collection<Category>(
         'categories'
     );
+    private _householdsCollection = this._angularFirestore.collection<
+        Household
+    >('households');
 
-    public items$ = this._itemsCollection.valueChanges();
-    public categories$ = this._categoriesCollection.valueChanges();
+    public household$ = this._authenticationService.user$.pipe(
+        switchMap((user) => {
+            if (user) {
+                return this._angularFirestore
+                    .collection<Household>('households', (ref) =>
+                        ref.where('householdKey', '==', user.refHouseholdKey)
+                    )
+                    .valueChanges();
+            }
+            return of({});
+        }),
+        map((households) => (households ? households[0] : null))
+    );
 
-    constructor(private _angularFirestore: AngularFirestore) {}
+    public items$ = this._authenticationService.user$.pipe(
+        switchMap((user) => {
+            if (user) {
+                return this._angularFirestore
+                    .collection<Item>('items', (ref) =>
+                        ref.where('refHouseholdKey', '==', user.refHouseholdKey)
+                    )
+                    .valueChanges();
+            }
+            return of([]);
+        })
+    );
+    public categories$ = this._authenticationService.user$.pipe(
+        switchMap((user) => {
+            if (user) {
+                return this._angularFirestore
+                    .collection<Category>('categories', (ref) =>
+                        ref.where('refHouseholdKey', '==', user.refHouseholdKey)
+                    )
+                    .valueChanges();
+            }
+            return of([]);
+        })
+    );
+
+    constructor(
+        private _angularFirestore: AngularFirestore,
+        private _authenticationService: AuthenticationService
+    ) {}
 
     public generateUid(): string {
         return this._angularFirestore.createId();
@@ -32,15 +77,21 @@ export class FirestoreService implements AbstractDataService {
     public updateCategory(category: Category): void {
         this._categoriesCollection.doc(category.categoryKey).update(category);
     }
-    // public fetchItems(): Observable<Item[]> {
-    //     console.log('fetchItems');
-
-    //     return this._itemsCollection.valueChanges();
-    // }
-    // public fetchCategories(): Observable<Category[]> {
-    //     console.log('fetchCategories');
-    //     return this._categoriesCollection.valueChanges();
-    // }
+    public createHousehold(household: Household): void {
+        this._householdsCollection.doc(household.householdKey).set(household);
+    }
+    public updateHousehold(household: Household): void {
+        this._householdsCollection
+            .doc(household.householdKey)
+            .update(household);
+    }
+    public getHouseholdByCode(householdCode: string): Observable<Household[]> {
+        return this._angularFirestore
+            .collection<Household>('households', (ref) =>
+                ref.where('householdCode', '==', householdCode)
+            )
+            .valueChanges();
+    }
 }
 
 const MOCK_CATEGORIES = [

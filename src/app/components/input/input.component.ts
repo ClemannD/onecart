@@ -1,4 +1,4 @@
-import { forwardRef, Self } from '@angular/core';
+import { EventEmitter, forwardRef, Output, Self } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import {
     ControlValueAccessor,
@@ -9,7 +9,7 @@ import {
 @Component({
     selector: 'app-input',
     template: `
-        <div class="app-input">
+        <div class="app-input" [class.light-mode]="lightMode">
             <ion-label position="stacked">{{ inputLabel }}</ion-label>
             <ion-input
                 [class]="{ disabled: disabled }"
@@ -21,7 +21,9 @@ import {
                 [(ngModel)]="value"
                 [pattern]="pattern"
                 [disabled]="disabled"
+                [autocapitalize]="autocapitalize ? 'on' : 'off'"
                 (ionBlur)="blured = true"
+                (ionFocus)="focus.emit()"
             ></ion-input>
             <div
                 class="input-error"
@@ -53,9 +55,12 @@ export class InputComponent implements ControlValueAccessor {
     @Input() public pattern: string;
     @Input() public maxlength: number;
     @Input() public placeholder: string;
+    @Input() public autocapitalize = false;
     @Input() public inputLabel: string;
     @Input() public disabled = false;
+    @Input() public lightMode = false;
     @Input('value') _value = '';
+    @Output() public focus = new EventEmitter();
 
     public blured = false;
 

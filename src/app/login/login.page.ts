@@ -14,7 +14,7 @@ import { AuthenticationService } from '../services/authentication.service';
         trigger('fadeIn', [
             transition(':enter', [
                 style({ opacity: 0 }),
-                animate('300ms ease-in-out')
+                animate('500ms ease-in-out')
             ])
         ])
     ]
@@ -46,7 +46,6 @@ export class LoginPage implements OnInit, OnDestroy {
                 !!user.lastName
             ) {
                 this._router.navigateByUrl('/tabs/home');
-                return this._router.createUrlTree(['./tabs/home']);
             } else if (!!user) {
                 this._router.navigateByUrl('/register');
             }

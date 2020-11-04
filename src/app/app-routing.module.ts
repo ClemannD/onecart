@@ -32,6 +32,14 @@ const routes: Routes = [
             import('./register/register.module').then(
                 (m) => m.RegisterPageModule
             )
+    },
+    {
+        path: 'household',
+        ...canActivate(redirectUnauthorizedToLogin),
+        loadChildren: () =>
+            import('./household/household.module').then(
+                (m) => m.HouseholdPageModule
+            )
     }
 ];
 @NgModule({

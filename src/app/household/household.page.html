@@ -1,0 +1,139 @@
+<ion-content [fullscreen]="true">
+    <div class="household-options-wrapper">
+        <div class="household-options">
+            <div
+                class="household-option first"
+                [class]="{
+                'selected': currentState === householdPageState.NewHoushold,
+                'hidden': currentState === householdPageState.JoinHousehold 
+            }"
+                (click)="currentState = householdPageState.NewHoushold"
+            >
+                <div
+                    class="household-option-cta"
+                    *ngIf="currentState !== householdPageState.NewHoushold"
+                    [@fadeIn]
+                >
+                    <ion-icon name="ios-house"></ion-icon>
+                    <br />
+                    Create a New <br />Household
+                </div>
+
+                <div
+                    [@fadeIn]
+                    *ngIf="currentState === householdPageState.NewHoushold"
+                >
+                    <div class="household-option-header">
+                        <ion-icon name="ios-house"></ion-icon>
+                        <div>Create a New Household</div>
+                    </div>
+
+                    <p>
+                        A household is a way to share lists with the members of
+                        your home.
+                    </p>
+                    <p>Once created, you will get a unique code to share.</p>
+
+                    <form
+                        class="new-household-form"
+                        [formGroup]="newHouseholdFormGroup"
+                        (ngSubmit)="handleNewHouseholdSubmit()"
+                    >
+                        <app-input
+                            inputLabel="Household Name"
+                            formControlName="householdName"
+                            [formControl]="newHouseholdNameFormControl"
+                            placeholder="Your Residence"
+                            maxlength="30"
+                        >
+                            <div
+                                *ngIf="newHouseholdNameFormControl.errors?.required"
+                            >
+                                Please enter a Household name
+                            </div>
+                        </app-input>
+
+                        <app-button
+                            type="submit"
+                            color="primary"
+                            [submitting]="newHouseholdFormSubmtting"
+                        >
+                            Create
+                        </app-button>
+                    </form>
+                </div>
+            </div>
+
+            <div
+                class="household-option second"
+                [class]="{
+                'selected': currentState === householdPageState.JoinHousehold,
+                'hidden': currentState === householdPageState.NewHoushold 
+            }"
+                (click)="currentState = householdPageState.JoinHousehold"
+            >
+                <div
+                    [@fadeIn]
+                    class="household-option-cta"
+                    *ngIf="currentState !== householdPageState.JoinHousehold"
+                >
+                    Join an exisitng <br />Household
+                </div>
+
+                <div
+                    [@fadeIn]
+                    *ngIf="currentState === householdPageState.JoinHousehold"
+                >
+                    <div class="household-option-header">
+                        Join an exisitng Household
+                    </div>
+
+                    <form
+                        [formGroup]="joinHouseholdFormGroup"
+                        (ngSubmit)="handleJoinHouseholdSubmit()"
+                    >
+                        <app-input
+                            inputLabel="Household Code"
+                            placeholder="6 digit code"
+                            [autocapitalize]="true"
+                            maxlength="6"
+                            formControlName="householdCode"
+                            [formControl]="joinHouseholdCodeFormControl"
+                        >
+                            <div
+                                *ngIf="joinHouseholdCodeFormControl.errors?.required"
+                            >
+                                Please enter a valid Household code
+                            </div>
+                            <div
+                                *ngIf="joinHouseholdCodeFormControl.errors?.maxlength || joinHouseholdCodeFormControl.errors?.minlength"
+                            >
+                                Household Code must be 6 characters long
+                            </div>
+                            <div
+                                *ngIf="joinHouseholdCodeFormControl.errors?.notFound"
+                            >
+                                No Household found using this code
+                            </div>
+                        </app-input>
+
+                        <app-button
+                            type="submit"
+                            [submitting]="joinHouseholdFormSubmtting"
+                            >Join</app-button
+                        >
+                    </form>
+                </div>
+            </div>
+            <app-button
+                class="sign-out-button"
+                expand="block"
+                (buttonClick)="signOut()"
+                fill="clear"
+                color="white"
+            >
+                Sign Out
+            </app-button>
+        </div>
+    </div>
+</ion-content>

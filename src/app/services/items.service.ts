@@ -1,20 +1,18 @@
 import { Inject, Injectable } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
-import { combineAll, map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Item, ItemState } from '../models/item.model';
 import { AbstractDataService } from './data-service/abstract-data.service';
+import { HouseholdService } from './household.service';
 
 @Injectable({ providedIn: 'root' })
 export class ItemsService {
     public items$: Observable<Item[]> = this._dataService.items$;
 
     constructor(
-        @Inject(AbstractDataService) private _dataService: AbstractDataService
-    ) {
-        // this.items$.subscribe((_) => {
-        //     console.log(_);
-        // });
-    }
+        @Inject(AbstractDataService) private _dataService: AbstractDataService,
+        private _hosueholdService: HouseholdService
+    ) {}
 
     public getItemsForCategory$(categoryKey: string): Observable<Item[]> {
         return this.items$.pipe(
@@ -28,11 +26,11 @@ export class ItemsService {
         categoryKey: string,
         includeNotNeeded = true
     ): Observable<Item[]> {
-        return combineLatest(
+        return combineLatest([
             this.getOutOfStockItemsForCategory$(categoryKey),
             this.getInStockItemsForCategory$(categoryKey),
             this.getNotNeededItemsForCategory$(categoryKey)
-        ).pipe(
+        ]).pipe(
             map(([outOfStockItems, inStockItems, notNeededItems]) => {
                 if (includeNotNeeded) {
                     return [
@@ -89,8 +87,13 @@ export class ItemsService {
         );
     }
 
-    public saveItem(item: Item) {
+    public async saveItem(item: Item): Promise<void> {
         if (!item.itemKey) {
+            item.refHouseholdKey = (
+                await this._hosueholdService.household$
+                    .pipe(first())
+                    .toPromise()
+            ).householdKey;
             item.itemKey = this._dataService.generateUid();
             item.itemState = ItemState.OutOfStock;
             this._dataService.createItem(item);

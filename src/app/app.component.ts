@@ -38,15 +38,14 @@ export class AppComponent implements OnDestroy {
         this._userSub = this._authentiationService.user$.subscribe((user) => {
             if (
                 !!user &&
-                !!user.email &&
-                !!user.phoneNumber &&
-                !!user.firstName &&
-                !!user.lastName
+                (!user.email ||
+                    !user.phoneNumber ||
+                    !user.firstName ||
+                    !user.lastName)
             ) {
-                this._router.navigateByUrl('/tabs/home');
-                return this._router.createUrlTree(['./tabs/home']);
-            } else if (!!user) {
                 this._router.navigateByUrl('/register');
+            } else if (!!user && !user.refHouseholdKey) {
+                this._router.navigateByUrl('/household');
             }
         });
     }

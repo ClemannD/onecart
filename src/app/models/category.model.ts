@@ -4,4 +4,5 @@ export interface Category {
     categoryRoute?: string;
     categoryIcon?: string;
     categoryTotal?: string;
+    refHouseholdKey?: string;
 }

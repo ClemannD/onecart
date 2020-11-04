@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { AbstractAuthDataService } from './data-service/abstract-auth-data.service';
 
@@ -45,8 +45,12 @@ export class AuthenticationService {
         this._authDataService.submitPhoneVerificationCode(verificationCode);
     }
 
-    public updateUser(user: User): void {
-        this._authDataService.updateUser(user);
+    public async updateUser(userUpdates: User): Promise<void> {
+        const user = await this.user$.pipe(first()).toPromise();
+        this._authDataService.updateUser({
+            ...user,
+            ...userUpdates
+        });
     }
 
     public signOut(): void {
