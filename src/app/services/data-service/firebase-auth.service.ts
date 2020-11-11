@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, pipe } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 import { WindowService } from '../window.service';
-import { AbstractAuthDataService } from './abstract-auth-data.service';
+import {
+    AbstractAuthDataService,
+    AuthErrorType
+} from './abstract-auth-data.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -15,21 +18,26 @@ export class FirebaseAuthService implements AbstractAuthDataService {
     private _recaptchaRenderedSubject = new BehaviorSubject<boolean>(false);
     public recaptchaRendered$ = this._recaptchaRenderedSubject.asObservable();
 
+    private _authenticationErrorSubject = new BehaviorSubject<AuthErrorType>(
+        null
+    );
+    public authenticationError$ = this._authenticationErrorSubject.asObservable();
+
     private _awaitingVerificationCodeSubject = new BehaviorSubject<boolean>(
         false
     );
     public awaitingVerificationCode$ = this._awaitingVerificationCodeSubject.asObservable();
 
-    // private _userSubject = new BehaviorSubject<User>(null);
-    // public user$ = this._userSubject.asObservable();
     public user$ = this._angularFireAuth.authState.pipe(
         switchMap((firebaseUser) => {
-            return this._angularFirestore
-                .collection<User>('users', (ref) =>
-                    ref.where('userKey', '==', firebaseUser.uid)
-                )
-                .valueChanges()
-                .pipe(map((users) => users[0] || null));
+            return firebaseUser
+                ? this._angularFirestore
+                      .collection<User>('users', (ref) =>
+                          ref.where('userKey', '==', firebaseUser.uid)
+                      )
+                      .valueChanges()
+                      .pipe(map((users) => users[0] || null))
+                : of(null);
         })
     );
 
@@ -38,26 +46,7 @@ export class FirebaseAuthService implements AbstractAuthDataService {
         private _angularFireAuth: AngularFireAuth,
         private _angularFirestore: AngularFirestore,
         private _router: Router
-    ) {
-        // this._angularFireAuth.authState.subscribe(async (firebaseUser) => {
-        //     if (firebaseUser) {
-        //         const user = (
-        //             await this._angularFirestore
-        //                 .collection<User>('users', (ref) =>
-        //                     ref.where('userKey', '==', firebaseUser.uid)
-        //                 )
-        //                 .valueChanges()
-        //                 .pipe(first())
-        //                 .toPromise()
-        //         )[0];
-        //         if (user) {
-        //             this._userSubject.next(user);
-        //         }
-        //     } else {
-        //         this._userSubject.next(null);
-        //     }
-        // });
-    }
+    ) {}
 
     public async initializeLogin(): Promise<void> {
         this._windowService.nativeWindow.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -103,6 +92,9 @@ export class FirebaseAuthService implements AbstractAuthDataService {
             })
             .catch((error) => {
                 console.log('Verification Error', error);
+                this._authenticationErrorSubject.next(
+                    AuthErrorType.InvalidCode
+                );
             });
     }
 
@@ -123,17 +115,13 @@ export class FirebaseAuthService implements AbstractAuthDataService {
                 .toPromise()
         )[0];
 
-        if (user) {
-            this._router.navigateByUrl('/');
-        } else {
+        if (!user) {
             const newUser = {
                 userKey: firebaseUser.uid,
                 phoneNumber: firebaseUser.phoneNumber
             };
             this._usersCollection.doc<User>(firebaseUser.uid).set(newUser);
-            // this._userSubject.next(newUser);
-
-            this._router.navigateByUrl('/register');
         }
+        this._router.navigateByUrl('/tabs/home');
     }
 }

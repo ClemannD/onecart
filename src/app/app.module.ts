@@ -21,6 +21,8 @@ import { WindowService } from './services/window.service';
 import { AbstractAuthDataService } from './services/data-service/abstract-auth-data.service';
 import { FirebaseAuthService } from './services/data-service/firebase-auth.service';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { RegisterPageGuard } from './guards/register-page.guard';
+import { HouseholdPageGuard } from './guards/household-page.guard';
 
 @NgModule({
     declarations: [AppComponent],
@@ -31,8 +33,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
         ReactiveFormsModule,
         FormsModule,
         IonicModule.forRoot({
-            mode: 'ios',
-            animated: false
+            mode: 'ios'
         }),
         AppRoutingModule,
         AngularFireModule.initializeApp(environment.firebase),
@@ -45,6 +46,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         AuthGuard,
         NoAuthGuard,
+        RegisterPageGuard,
+        HouseholdPageGuard,
         AngularFirestore,
         {
             provide: AbstractDataService,

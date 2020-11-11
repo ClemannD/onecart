@@ -27,9 +27,16 @@
             </div>
         </info-box>
 
-        <div class="no-categories"></div>
+        <div class="no-categories" *ngIf="!(categories$ | async)?.length">
+            <div class="no-categories-label">
+                Create a Category to get started
+            </div>
+            <app-button fill="clear" (buttonClick)="addCategory()">
+                Add Category
+            </app-button>
+        </div>
 
-        <div *ngIf="!!(categories$ | async)">
+        <div *ngIf="(categories$ | async)?.length > 0">
             <section-label
                 label="Categories"
                 [count]="(categories$ | async)?.length"

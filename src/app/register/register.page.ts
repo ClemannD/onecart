@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import { AuthenticationService } from '../services/authentication.service';
         ])
     ]
 })
-export class RegisterPage implements OnInit, OnDestroy {
+export class RegisterPage implements OnDestroy {
     public user$ = this._authentiationService.user$;
 
     public registrationFormGroup: FormGroup;
@@ -41,28 +41,14 @@ export class RegisterPage implements OnInit, OnDestroy {
         });
 
         this._userSub = this.user$.subscribe((user) => {
-            if (user) {
-                if (
-                    !!user &&
-                    !!user.email &&
-                    !!user.phoneNumber &&
-                    !!user.firstName &&
-                    !!user.lastName
-                ) {
-                    this._router.navigateByUrl('/tabs/home');
-                } else {
-                    this.registrationFormGroup.reset({
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        email: user.email,
-                        phoneNumber: user.phoneNumber
-                    });
-                }
-            }
+            this.registrationFormGroup.reset({
+                firstName: user?.firstName || '',
+                lastName: user?.lastName || '',
+                email: user?.email || '',
+                phoneNumber: user?.phoneNumber || ''
+            });
         });
     }
-
-    public ngOnInit(): void {}
 
     public ngOnDestroy(): void {
         this._userSub.unsubscribe();

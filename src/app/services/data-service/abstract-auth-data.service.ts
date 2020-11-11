@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 
+export enum AuthErrorType {
+    InvalidCode = 1
+}
+
 @Injectable()
 export class AbstractAuthDataService {
     public user$: Observable<User>;
     public awaitingVerificationCode$: Observable<boolean>;
     public recaptchaRendered$: Observable<boolean>;
+    public authenticationError$: Observable<AuthErrorType>;
 
     constructor() {}
 

@@ -5,7 +5,7 @@
     justify-content: center;
     background: $blue-gradient;
 
-    height: 100vh;
+    height: 100%;
     width: 100%;
     padding: 2rem;
 
@@ -53,7 +53,7 @@
         }
 
         &.hidden {
-            flex-basis: 0%;
+            height: auto;
         }
 
         .household-option-cta {

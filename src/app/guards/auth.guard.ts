@@ -21,9 +21,18 @@ export class AuthGuard implements CanActivate {
                     !!user.email &&
                     !!user.phoneNumber &&
                     !!user.firstName &&
-                    !!user.lastName
+                    !!user.lastName &&
+                    !!user.refHouseholdKey
                 ) {
                     return true;
+                } else if (
+                    !!user &&
+                    !!user.email &&
+                    !!user.phoneNumber &&
+                    !!user.firstName &&
+                    !!user.lastName
+                ) {
+                    return this._router.createUrlTree(['./household']);
                 } else if (!!user) {
                     return this._router.createUrlTree(['./register']);
                 }

@@ -1,0 +1,27 @@
+@import 'src/theme/variables';
+
+ion-menu {
+    .close-icon {
+        color: $grey;
+    }
+
+    .household-info {
+        color: $black;
+        bottom: 0%;
+        width: 100%;
+        text-align: center;
+        padding: 2rem;
+
+        .household-info-name {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .household-info-code {
+            color: $blue;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+    }
+}

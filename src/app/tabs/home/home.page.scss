@@ -45,4 +45,14 @@ ion-content {
             --ion-grid-column-padding: 1rem;
         }
     }
+
+    .no-categories {
+        width: 100%;
+        font-size: 2rem;
+        text-align: center;
+
+        .no-categories-label {
+            margin-bottom: 1rem;
+        }
+    }
 }

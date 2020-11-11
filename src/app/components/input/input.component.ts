@@ -14,21 +14,22 @@ import {
             <ion-input
                 [class]="{ disabled: disabled }"
                 [type]="type"
+                [name]="name"
                 [inputmode]="inputMode"
                 [autocomplete]="autocomplete"
                 [maxlength]="maxlength"
+                [autofocus]="autofocus"
                 [placeholder]="placeholder"
                 [(ngModel)]="value"
                 [pattern]="pattern"
                 [disabled]="disabled"
-                [autocapitalize]="autocapitalize ? 'on' : 'off'"
+                [autocapitalize]="autocapitalize"
                 (ionBlur)="blured = true"
                 (ionFocus)="focus.emit()"
             ></ion-input>
             <div
                 class="input-error"
                 *ngIf="
-                    formControl?.invalid &&
                     (blured || formControl.errors?.required) &&
                     (formControl.dirty || formControl.touched)
                 "
@@ -52,10 +53,11 @@ export class InputComponent implements ControlValueAccessor {
     @Input() public type = 'text';
     @Input() public inputMode = 'text';
     @Input() public autocomplete: string;
+    @Input() public autofocus = 'false';
     @Input() public pattern: string;
     @Input() public maxlength: number;
     @Input() public placeholder: string;
-    @Input() public autocapitalize = false;
+    @Input() public autocapitalize = 'on';
     @Input() public inputLabel: string;
     @Input() public disabled = false;
     @Input() public lightMode = false;

@@ -8,7 +8,8 @@
 
     .category-wrapper {
         min-width: 100vw;
-        height: 100vh;
+        // height: calc(100vh - 190px);
+        height: calc(100% - 420px);
         scroll-snap-align: start;
         padding: 2rem;
     }
