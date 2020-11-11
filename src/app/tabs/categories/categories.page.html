@@ -1,12 +1,19 @@
-<ion-content [fullscreen]="false" [scrollY]="false">
-    <div class="categories-horizontal-viewport" #categoriesViewport>
-        <div
-            #category
-            *ngFor="let category of (categories$ | async)"
-            class="category-wrapper"
-            [id]="category.categoryRoute"
-        >
-            <category [category]="category"></category>
-        </div>
-    </div>
+<ion-header>
+    <ion-toolbar class="title-toolbar">
+        <ion-title size="large">
+            {{ (category$ | async)?.categoryName }}
+            <ion-icon
+                [name]="(category$ | async)?.categoryIcon"
+                class="category-icon"
+            ></ion-icon>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content [scrollX]="true" [forceOverscroll]="true">
+    <category
+        *ngIf="!!(category$ | async)?.categoryKey"
+        [category]="(category$ | async)"
+        [isFirst]="(categroyIndex$ | async) === 0"
+        [isLast]="isLastCategory$ | async"
+    ></category>
 </ion-content>

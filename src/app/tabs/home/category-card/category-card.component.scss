@@ -10,9 +10,11 @@
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    border: 1px solid $grey-lightest;
+    transition: border 0.4s $ease-out-quart;
 
     &:hover {
-        box-shadow: $shadow-box-light;
+        border: 1px solid $grey-blue-light;
     }
 
     ion-icon {

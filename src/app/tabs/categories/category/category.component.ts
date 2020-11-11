@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { formatMoney } from 'src/app/helpers/format.helpers';
@@ -11,11 +11,7 @@ import { AddModalService } from '../../modals/add-modal.service';
     selector: 'category',
     styleUrls: ['./category.component.scss'],
     template: `
-        <div class="category">
-            <h3 class="title">
-                {{ category.categoryName }}
-                <ion-icon [name]="category.categoryIcon"></ion-icon>
-            </h3>
+        <div class="category" *ngIf="category">
             <info-box>
                 <div class="data-points">
                     <div
@@ -27,7 +23,7 @@ import { AddModalService } from '../../modals/add-modal.service';
                                 *ngIf="dataPoint.dataLabel === 'Estimated Cost'"
                                 class="currency-symbol"
                                 >$</span
-                            >{{ dataPoint.dataValue | async }}
+                            >{{ (dataPoint.dataValue | async) || '0' }}
                         </div>
                         <h6>{{ dataPoint.dataLabel }}</h6>
                     </div>
@@ -53,6 +49,22 @@ import { AddModalService } from '../../modals/add-modal.service';
                 </app-button>
             </div>
 
+            <div class="swipe-instructions">
+                <div class="swipe-arrow">
+                    <ion-icon
+                        *ngIf="!isFirst"
+                        name="arrow-back-sharp"
+                    ></ion-icon>
+                </div>
+                <span class="swipe">Swipe to change category</span>
+                <div class="swipe-arrow">
+                    <ion-icon
+                        *ngIf="!isLast"
+                        name="arrow-forward-sharp"
+                    ></ion-icon>
+                </div>
+            </div>
+
             <div class="category-items">
                 <item-list
                     *ngIf="categoryItems$"
@@ -63,8 +75,10 @@ import { AddModalService } from '../../modals/add-modal.service';
         </div>
     `
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent implements OnInit, OnChanges {
     @Input() public category: Category;
+    @Input() public isFirst = false;
+    @Input() public isLast = false;
 
     public categoryItems$: Observable<Item[]>;
     public dataPoints: {
@@ -77,13 +91,16 @@ export class CategoryComponent implements OnInit {
         private _addModalService: AddModalService
     ) {}
 
-    public ngOnInit(): void {
-        this.categoryItems$ = this._itemsService.getOrderedItemsForCategory$(
-            this.category.categoryKey
-        );
-
-        this.initializeDataPoints();
+    public ngOnChanges(_): void {
+        if (this.category) {
+            this.categoryItems$ = this._itemsService.getOrderedItemsForCategory$(
+                this.category.categoryKey
+            );
+            this.initializeDataPoints();
+        }
     }
+
+    public ngOnInit(): void {}
 
     public handleEditClick() {
         this._addModalService.showCategoryModal(this.category);

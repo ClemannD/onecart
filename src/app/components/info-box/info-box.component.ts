@@ -5,9 +5,9 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     styleUrls: ['./info-box.component.scss'],
     encapsulation: ViewEncapsulation.None,
     template: `
-        <div class="info-box">
+        <ion-card class="info-box">
             <ng-content></ng-content>
-        </div>
+        </ion-card>
     `
 })
 export class InfoBoxComponent {}

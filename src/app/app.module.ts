@@ -23,6 +23,7 @@ import { FirebaseAuthService } from './services/data-service/firebase-auth.servi
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { RegisterPageGuard } from './guards/register-page.guard';
 import { HouseholdPageGuard } from './guards/household-page.guard';
+import { pageTransition } from './page-transition';
 
 @NgModule({
     declarations: [AppComponent],
@@ -33,7 +34,8 @@ import { HouseholdPageGuard } from './guards/household-page.guard';
         ReactiveFormsModule,
         FormsModule,
         IonicModule.forRoot({
-            mode: 'ios'
+            mode: 'ios',
+            navAnimation: pageTransition
         }),
         AppRoutingModule,
         AngularFireModule.initializeApp(environment.firebase),
