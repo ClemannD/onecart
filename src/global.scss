@@ -42,7 +42,9 @@ app-button {
 }
 
 ion-content {
-    // --padding-bottom: 3rem;
+    --padding-start: 1.6rem;
+    --padding-end: 1.6rem;
+    --padding-bottom: 4rem;
 }
 
 ion-modal.auto-height {
@@ -113,4 +115,8 @@ ion-label.sc-ion-label-ios-h {
 
 ion-toolbar {
     --border-color: #ffffff;
+
+    &.title-toolbar {
+        --min-height: 6rem;
+    }
 }

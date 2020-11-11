@@ -1,30 +1,19 @@
 @import 'src/theme/variables';
 
 ion-content {
-    --padding-top: 3rem;
-    --padding-start: 2rem;
-    --padding-end: 2rem;
+    --padding-start: 1.6rem;
+    --padding-end: 1.6rem;
+    --padding-bottom: 4rem;
 }
 
 .home-tab {
-    padding: 2.5rem 2rem 4rem !important;
-
-    .date {
-        margin: 0;
-    }
-
-    .title {
-        margin-top: 0;
-        margin-bottom: 2rem;
-    }
-
     .home-page-wrapper {
         max-width: 400px;
         margin: auto;
 
         info-box {
             display: block;
-            margin-bottom: 4.5rem;
+            margin-bottom: 2.5rem;
 
             .data-points {
                 margin-top: 2rem;
@@ -42,7 +31,7 @@ ion-content {
         }
 
         ion-col {
-            --ion-grid-column-padding: 1rem;
+            --ion-grid-column-padding: 0.8rem;
         }
     }
 

@@ -111,7 +111,7 @@ export class HouseholdPage implements OnInit, OnDestroy {
                 });
                 this.joinHouseholdFormSubmtting = false;
             } else {
-                this._router.navigateByUrl('/');
+                this._router.navigateByUrl('/tabs/home');
             }
         }
     }

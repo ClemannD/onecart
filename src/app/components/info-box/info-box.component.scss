@@ -1,9 +1,8 @@
 @import 'src/theme/variables';
 
 .info-box {
-    width: 100%;
     padding: 2rem;
-    border-radius: 5px;
+    margin: 1rem 0;
     box-shadow: $shadow-box-dark;
     background: $blue-gradient;
     color: $white;

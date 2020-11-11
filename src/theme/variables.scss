@@ -19,9 +19,11 @@ $blue-gradient: linear-gradient(90deg, $blue-light, $blue);
 $shadow-light: 0 2px 5px rgba(100, 118, 130, 0.1) !important;
 $shadow-box-light: 0 0 15px 0 rgba(0, 0, 0, 0.2) !important;
 $shadow-box-normal: 0 10px 40px -2px rgba(0, 0, 0, 0.2) !important;
-$shadow-box-dark: 0 10px 40px -2px rgba(0, 0, 0, 0.4) !important;
+$shadow-box-dark: 0 20px 30px -15px rgba(0, 0, 0, 0.4) !important;
 
 $border-radius: 5px;
+
+$ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/

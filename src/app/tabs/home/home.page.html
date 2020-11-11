@@ -1,7 +1,9 @@
+<ion-header>
+    <ion-toolbar class="title-toolbar">
+        <ion-title size="large"> Home </ion-title>
+    </ion-toolbar>
+</ion-header>
 <ion-content [fullscreen]="false" class="home-tab">
-    <h5 class="date">{{today}}</h5>
-    <h3 class="title">Home</h3>
-
     <div class="spinner-container">
         <ion-spinner
             *ngIf="!dataPoints || !(categories$ | async)"
