@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="false">
     <div class="household-options-wrapper">
         <div class="household-options">
             <div
@@ -95,7 +95,7 @@
                         <app-input
                             inputLabel="Household Code"
                             placeholder="6 digit code"
-                            [autocapitalize]="true"
+                            autocapitalize="characters"
                             maxlength="6"
                             formControlName="householdCode"
                             [formControl]="joinHouseholdCodeFormControl"

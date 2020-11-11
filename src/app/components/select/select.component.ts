@@ -14,7 +14,7 @@ import {
             <ion-select
                 [class]="{
                     disabled: disabled,
-                    'has-value': !!formControl.value
+                    'has-value': !!formControl?.value
                 }"
                 [placeholder]="placeholder"
                 [interface]="interface"
@@ -34,8 +34,8 @@ import {
                 class="input-error"
                 *ngIf="
                     formControl?.invalid &&
-                    (blured || formControl.errors?.required) &&
-                    (formControl.dirty || formControl.touched)
+                    (blured || formControl?.errors?.required) &&
+                    (formControl?.dirty || formControl?.touched)
                 "
             >
                 <ng-content></ng-content>

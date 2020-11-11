@@ -9,6 +9,7 @@ import { Category } from 'src/app/models/category.model';
 import { Item, ItemState } from 'src/app/models/item.model';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { ItemsService } from 'src/app/services/items.service';
+import { AddModalService } from '../modals/add-modal.service';
 
 @Component({
     selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomePage implements OnInit {
     public today = format(new Date(), 'EEEE, MMM d');
 
     constructor(
+        private _addModalService: AddModalService,
         private _itemsService: ItemsService,
         private _categoriesService: CategoriesService
     ) {}
@@ -86,5 +88,9 @@ export class HomePage implements OnInit {
                 )
             }
         ];
+    }
+
+    public addCategory(): void {
+        this._addModalService.showCategoryModal();
     }
 }

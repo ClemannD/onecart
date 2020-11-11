@@ -1,16 +1,12 @@
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
 import { HouseholdService } from '../services/household.service';
+import { AddModalService } from '../tabs/modals/add-modal.service';
 
 enum HouseholdPageState {
     Unselected = 0,
@@ -32,8 +28,6 @@ enum HouseholdPageState {
     ]
 })
 export class HouseholdPage implements OnInit, OnDestroy {
-    private _userSub: Subscription;
-
     public currentState = HouseholdPageState.Unselected;
     public householdPageState = HouseholdPageState;
 
@@ -43,6 +37,8 @@ export class HouseholdPage implements OnInit, OnDestroy {
     public joinHouseholdFormGroup: FormGroup;
     public joinHouseholdCodeCurrentValue = '';
 
+    private _inputChangesSub: Subscription;
+
     constructor(
         private _authenticationService: AuthenticationService,
         private _router: Router,
@@ -51,14 +47,6 @@ export class HouseholdPage implements OnInit, OnDestroy {
     ) {}
 
     public ngOnInit(): void {
-        this._userSub = this._authenticationService.user$.subscribe((user) => {
-            if (user) {
-                if (!!user && !!user.refHouseholdKey) {
-                    this._router.navigateByUrl('/tabs/home');
-                }
-            }
-        });
-
         this.newHouseholdFormGroup = this._formBuilder.group({
             householdName: ['', [Validators.required, Validators.maxLength(30)]]
         });
@@ -73,7 +61,7 @@ export class HouseholdPage implements OnInit, OnDestroy {
             ]
         });
 
-        this.joinHouseholdCodeFormControl.valueChanges
+        this._inputChangesSub = this.joinHouseholdCodeFormControl.valueChanges
             .pipe(
                 filter((value) => {
                     return value !== this.joinHouseholdCodeCurrentValue;
@@ -88,7 +76,7 @@ export class HouseholdPage implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this._userSub.unsubscribe();
+        this._inputChangesSub.unsubscribe();
     }
 
     public async handleNewHouseholdSubmit(): Promise<void> {
@@ -110,7 +98,6 @@ export class HouseholdPage implements OnInit, OnDestroy {
 
         if (this.joinHouseholdFormGroup.valid) {
             this.joinHouseholdFormSubmtting = true;
-            console.log('valid');
 
             const householdFound = await this._householdService.associateUserToHousehold(
                 this.joinHouseholdCodeFormControl.value

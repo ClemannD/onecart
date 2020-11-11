@@ -1,6 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Item, ItemState } from 'src/app/models/item.model';
 import { CategoriesService } from 'src/app/services/categories.service';
@@ -9,12 +18,18 @@ import { ItemsService } from 'src/app/services/items.service';
 @Component({
     selector: 'item-modal',
     template: `
-        <form [formGroup]="itemFormGroup" (ngSubmit)="saveItem()">
+        <form
+            *ngIf="itemFormGroup"
+            [formGroup]="itemFormGroup"
+            (ngSubmit)="saveItem()"
+            (keydown.enter)="saveItem()"
+        >
             <h3>{{ item?.itemKey ? 'Edit Item' : 'New Item' }}</h3>
             <app-input
                 inputLabel="Name"
                 placeholder="Enter Item Name"
                 formControlName="itemName"
+                name="itemName"
                 [formControl]="itemNameFormControl"
                 [maxlength]="40"
             >
@@ -26,8 +41,8 @@ import { ItemsService } from 'src/app/services/items.service';
                 inputLabel="Category"
                 placeholder="Select a Category"
                 formControlName="itemCategory"
-                [formControl]="itemCategoryFormControl"
-                [options]="categoryOptions$ | async"
+                name="itemCategory"
+                [options]="categoryOptions"
             >
                 <div *ngIf="itemCategoryFormControl.errors?.required">
                     Please Select a Category
@@ -38,6 +53,7 @@ import { ItemsService } from 'src/app/services/items.service';
                 inputLabel="Cost (Approximate)"
                 placeholder="Use the Buttons to Set Cost"
                 formControlName="itemCost"
+                name="itemCost"
                 [disabled]="true"
                 [formControl]="itemCostFormControl"
             >
@@ -123,41 +139,53 @@ import { ItemsService } from 'src/app/services/items.service';
         </form>
     `
 })
-export class ItemModalComponent implements OnInit {
+export class ItemModalComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() public item: Item;
 
     public itemCostModel: number;
     public itemFormGroup: FormGroup;
     public itemState = ItemState;
 
-    public categoryOptions$ = this._categoriesService.categories$.pipe(
-        map((categories) => {
-            return categories.map((category) => ({
-                value: category.categoryKey,
-                label: category.categoryName
-            }));
-        })
-    );
+    public categoryOptions: { value: string; label: string }[];
+
+    private _categoriesSub: Subscription;
 
     constructor(
         private _modalController: ModalController,
         private _formBuilder: FormBuilder,
         private _categoriesService: CategoriesService,
         private _itemsService: ItemsService
-    ) {}
+    ) {
+        this._categoriesSub = this._categoriesService.categories$.subscribe(
+            (categories) => {
+                this.categoryOptions = categories.map((category) => ({
+                    value: category.categoryKey,
+                    label: category.categoryName
+                }));
 
-    public ngOnInit() {
+                this.itemFormGroup = this._formBuilder.group({
+                    itemName: [this.item?.itemName || '', Validators.required],
+                    itemCategory: [
+                        this.item?.refCategoryKey || '',
+                        Validators.required
+                    ],
+                    itemState: [this.item?.itemState || ''],
+                    itemCost: [
+                        `$${this.itemCostModel}` || '',
+                        Validators.required
+                    ]
+                });
+            }
+        );
+    }
+
+    public ngOnInit(): void {
         this.itemCostModel = this.item?.itemCost || 0;
+    }
+    public ngAfterViewInit(): void {}
 
-        this.itemFormGroup = this._formBuilder.group({
-            itemName: [this.item?.itemName || '', Validators.required],
-            itemCategory: [
-                this.item?.refCategoryKey || '',
-                Validators.required
-            ],
-            itemState: [this.item?.itemState || ''],
-            itemCost: [`$${this.itemCostModel}` || '', Validators.required]
-        });
+    public ngOnDestroy(): void {
+        this._categoriesSub.unsubscribe();
     }
 
     public async saveItem(): Promise<void> {

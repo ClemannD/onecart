@@ -1,3 +1,42 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+    <ion-router-outlet id="main" [swipeGesture]="false"></ion-router-outlet>
+
+    <ion-menu
+        side="end"
+        menuId="side-menu"
+        contentId="main"
+        [swipeGesture]="false"
+    >
+        <ion-header>
+            <ion-toolbar>
+                <ion-buttons>
+                    <ion-button (click)="closeMenu()">
+                        <ion-icon
+                            class="close-icon"
+                            slot="icon-only"
+                            name="close-outline"
+                        ></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+                <ion-title>Menu</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content *ngIf="household$ | async">
+            <ion-list>
+                <ion-item button (click)="signOut()">
+                    <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                    Logout
+                </ion-item>
+            </ion-list>
+            <div slot="fixed" class="household-info">
+                <div class="household-info-name">
+                    {{ (household$ | async)?.householdName }}
+                </div>
+                <div class="household-info-label">Your Household Code</div>
+                <div class="household-info-code">
+                    {{ (household$ | async)?.householdCode }}
+                </div>
+            </div>
+        </ion-content>
+    </ion-menu>
 </ion-app>

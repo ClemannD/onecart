@@ -4,6 +4,10 @@
             <ion-icon name="ios-home-alt"></ion-icon>
         </ion-tab-button>
 
+        <ion-tab-button tab="categories">
+            <ion-icon name="ios-layer-group"></ion-icon>
+        </ion-tab-button>
+
         <ion-tab-button (click)="showAddModal()">
             <div class="add-button-circle">
                 <ion-icon name="ios-plus"></ion-icon>
@@ -14,12 +18,8 @@
             <ion-icon name="ios-shopping-basket"></ion-icon>
         </ion-tab-button>
 
-        <!-- <ion-tab-button tab="lists">
-            <ion-icon name="ios-list-alt"></ion-icon>
-        </ion-tab-button> -->
-
-        <ion-tab-button tab="categories">
-            <ion-icon name="ios-layer-group"></ion-icon>
+        <ion-tab-button (click)="showMenu()">
+            <ion-icon name="settings-outline"></ion-icon>
         </ion-tab-button>
     </ion-tab-bar>
 </ion-tabs>

@@ -49,6 +49,7 @@
                 *ngIf="!(awaitingVerificationCode$ | async)"
                 expand="block"
                 type="submit"
+                [submitting]="submittingPhoneNumber"
                 [disabled]="!(recaptchaRendered$ | async)"
             >
                 Send Code
@@ -73,12 +74,30 @@
                     >
                         Please Enter your 6 Digit Verification Code
                     </div>
+                    <ng-container
+                        *ngIf="!(
+                            verificationCodeFormControl.errors?.required 
+                            || verificationCodeFormControl.errors?.pattern
+                        )"
+                    >
+                        <div
+                            *ngIf="(authenticationError$ | async) === authErrorType.InvalidCode"
+                        >
+                            Invalid code, please try again
+                        </div>
+                        <div
+                            *ngIf="(authenticationError$ | async) && (authenticationError$ | async) !== authErrorType.InvalidCode"
+                        >
+                            There was an error logging in, please try again
+                        </div>
+                    </ng-container>
                 </app-input>
             </ng-container>
             <app-button
                 *ngIf="awaitingVerificationCode$ | async"
                 class="login-button"
                 expand="block"
+                [submitting]="submittingVerificationCode"
                 (buttonClick)="submitVerificationCode()"
             >
                 Login

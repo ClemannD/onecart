@@ -53,11 +53,13 @@ import { AddModalService } from '../../modals/add-modal.service';
                 </app-button>
             </div>
 
-            <item-list
-                *ngIf="categoryItems$"
-                [items$]="categoryItems$"
-                (addItem)="addItem()"
-            ></item-list>
+            <div class="category-items">
+                <item-list
+                    *ngIf="categoryItems$"
+                    [items$]="categoryItems$"
+                    (addItem)="addItem()"
+                ></item-list>
+            </div>
         </div>
     `
 })

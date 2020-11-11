@@ -9,17 +9,8 @@ import { AbstractAuthDataService } from './data-service/abstract-auth-data.servi
 })
 export class AuthenticationService {
     public user$ = this._authDataService.user$;
-    public isFullyRegistered$ = this.user$.pipe(
-        map((user) => {
-            return (
-                !!user &&
-                !!user.email &&
-                !!user.phoneNumber &&
-                !!user.firstName &&
-                !!user.lastName
-            );
-        })
-    );
+    public authenticationError$ = this._authDataService.authenticationError$;
+
     public awaitingVerificationCode$ = this._authDataService
         .awaitingVerificationCode$;
     public recaptchaRendered$ = this._authDataService.recaptchaRendered$;

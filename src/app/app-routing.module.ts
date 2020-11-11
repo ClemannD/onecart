@@ -2,32 +2,25 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { NoAuthGuard } from './guards/no-auth.guard';
-import {
-    AngularFireAuthGuard,
-    hasCustomClaim,
-    redirectUnauthorizedTo,
-    redirectLoggedInTo,
-    canActivate
-} from '@angular/fire/auth-guard';
-
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
-const redirectLoggedInToHome = () => redirectLoggedInTo(['/tabs/home']);
+import { RegisterPageGuard } from './guards/register-page.guard';
+import { HouseholdPageGuard } from './guards/household-page.guard';
 
 const routes: Routes = [
     {
         path: '',
-        ...canActivate(redirectUnauthorizedToLogin),
+        canActivate: [AuthGuard],
         loadChildren: () =>
             import('./tabs/tabs.module').then((m) => m.TabsPageModule)
     },
     {
         path: 'login',
+        canActivate: [NoAuthGuard],
         loadChildren: () =>
             import('./login/login.module').then((m) => m.LoginPageModule)
     },
     {
         path: 'register',
-        ...canActivate(redirectUnauthorizedToLogin),
+        canActivate: [RegisterPageGuard],
         loadChildren: () =>
             import('./register/register.module').then(
                 (m) => m.RegisterPageModule
@@ -35,7 +28,7 @@ const routes: Routes = [
     },
     {
         path: 'household',
-        ...canActivate(redirectUnauthorizedToLogin),
+        canActivate: [HouseholdPageGuard],
         loadChildren: () =>
             import('./household/household.module').then(
                 (m) => m.HouseholdPageModule

@@ -98,8 +98,6 @@ export class ItemsService {
             item.itemState = ItemState.OutOfStock;
             this._dataService.createItem(item);
         } else {
-            console.log(item);
-
             this._dataService.updateItem(item);
         }
     }

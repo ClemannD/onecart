@@ -1,8 +1,10 @@
 @import 'src/theme/variables';
-
 .category {
+    border-radius: 10px;
+
     .title {
-        margin-bottom: 3rem;
+        margin-bottom: 1rem;
+        line-height: 1em;
 
         ion-icon {
             font-size: 2.5rem;
@@ -13,7 +15,7 @@
 
     info-box {
         display: block;
-        margin-bottom: 4.5rem;
+        margin-bottom: 2rem;
     }
 
     .category-actions {
@@ -27,5 +29,29 @@
                 margin-right: 2rem;
             }
         }
+    }
+
+    .category-items {
+        max-height: calc(100vh - 440px);
+        border-radius: 5px;
+        border: 1px solid $grey-blue-light;
+
+        $background-color: $white;
+
+        overflow-y: scroll;
+        background-size: 100%;
+        background-image: linear-gradient(
+                to bottom,
+                $background-color,
+                rgba(255, 255, 255, 0)
+            ),
+            linear-gradient(to top, $background-color, rgba(255, 255, 255, 0)),
+            linear-gradient(to bottom, #ddd, rgba(255, 255, 255, 0)),
+            linear-gradient(to top, #ddd, rgba(255, 255, 255, 0));
+        background-position: 0 0, 0 100%, 0 0, 0 100%;
+        background-repeat: no-repeat;
+        background-color: $background-color;
+        background-size: 100% 5rem, 100% 5rem, 100% 1rem, 100% 1rem;
+        background-attachment: local, local, scroll, scroll;
     }
 }
