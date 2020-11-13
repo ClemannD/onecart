@@ -11,7 +11,7 @@ import { AddModalService } from '../../modals/add-modal.service';
     selector: 'category',
     styleUrls: ['./category.component.scss'],
     template: `
-        <div class="category" *ngIf="category">
+        <div class="category">
             <info-box>
                 <div class="data-points">
                     <div

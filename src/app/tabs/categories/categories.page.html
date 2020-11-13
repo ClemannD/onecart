@@ -9,11 +9,20 @@
         </ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content [scrollX]="true" [forceOverscroll]="true">
-    <category
-        *ngIf="!!(category$ | async)?.categoryKey"
-        [category]="(category$ | async)"
-        [isFirst]="(categroyIndex$ | async) === 0"
-        [isLast]="isLastCategory$ | async"
-    ></category>
+
+<ion-content [fullscreen]="false" [scrollY]="(shouldScrollY$ | async)">
+    <div
+        class="categories-horizontal-viewport"
+        #categoriesViewport
+        (scroll)="handleScroll($event)"
+    >
+        <div
+            #category
+            *ngFor="let category of (categories$ | async)"
+            class="category-wrapper"
+            [id]="category.categoryRoute"
+        >
+            <category [category]="category"></category>
+        </div>
+    </div>
 </ion-content>

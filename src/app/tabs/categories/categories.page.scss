@@ -1,15 +1,24 @@
 @import 'src/theme/variables';
 
+ion-content {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-bottom: 0;
+}
+
 .categories-horizontal-viewport {
     scroll-snap-type: x mandatory;
     display: flex;
     -webkit-overflow-scrolling: touch;
     overflow-x: scroll;
 
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
     .category-wrapper {
         min-width: 100vw;
-        // height: calc(100vh - 190px);
-        height: calc(100% - 420px);
+        min-height: calc(100% - 420px);
         scroll-snap-align: start;
         padding: 2rem;
     }
