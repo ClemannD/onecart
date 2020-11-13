@@ -22,8 +22,6 @@ export class HouseholdService {
                 refHouseholdKey: household.householdKey
             });
         } else {
-            console.log('updated');
-
             this._dataService.updateHousehold(household);
         }
     }
@@ -36,10 +34,8 @@ export class HouseholdService {
             .pipe(first())
             .toPromise();
 
-        console.log(households);
-
         if (households.length) {
-            this._authService.updateUser({
+            await this._authService.updateUser({
                 refHouseholdKey: households[0].householdKey
             });
             return true;

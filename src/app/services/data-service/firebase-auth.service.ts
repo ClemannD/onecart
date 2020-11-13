@@ -98,8 +98,8 @@ export class FirebaseAuthService implements AbstractAuthDataService {
             });
     }
 
-    public updateUser(user: User): void {
-        this._usersCollection.doc(user.userKey).set(user);
+    public async updateUser(user: User): Promise<void> {
+        await this._usersCollection.doc(user.userKey).set(user);
     }
 
     private async _loginUserByPhoneNumber(
