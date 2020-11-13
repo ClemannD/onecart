@@ -24,7 +24,7 @@ export class RegisterPageGuard implements CanActivate {
                     !!user.lastName &&
                     !!user.refHouseholdKey
                 ) {
-                    return this._router.createUrlTree(['./tabs/household']);
+                    return this._router.createUrlTree(['./tabs/home']);
                 } else if (
                     !!user &&
                     !!user.email &&

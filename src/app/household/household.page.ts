@@ -94,16 +94,12 @@ export class HouseholdPage implements OnInit, OnDestroy {
 
     public async handleJoinHouseholdSubmit(): Promise<void> {
         this.joinHouseholdFormGroup.markAllAsTouched();
-        console.log(this.joinHouseholdFormGroup);
-
         if (this.joinHouseholdFormGroup.valid) {
             this.joinHouseholdFormSubmtting = true;
 
             const householdFound = await this._householdService.associateUserToHousehold(
                 this.joinHouseholdCodeFormControl.value
             );
-
-            console.log(householdFound);
 
             if (!householdFound) {
                 this.joinHouseholdCodeFormControl.setErrors({

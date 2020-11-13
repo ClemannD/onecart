@@ -38,7 +38,7 @@ export class AuthenticationService {
 
     public async updateUser(userUpdates: User): Promise<void> {
         const user = await this.user$.pipe(first()).toPromise();
-        this._authDataService.updateUser({
+        await this._authDataService.updateUser({
             ...user,
             ...userUpdates
         });

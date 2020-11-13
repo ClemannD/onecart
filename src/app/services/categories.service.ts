@@ -12,11 +12,7 @@ export class CategoriesService {
     constructor(
         @Inject(AbstractDataService) private _dataService: AbstractDataService,
         private _hosueholdService: HouseholdService
-    ) {
-        // this.categories$.subscribe((_) => {
-        //     console.log(_);
-        // });
-    }
+    ) {}
 
     public async saveCategory(category: Category): Promise<void> {
         if (!category.categoryKey) {
