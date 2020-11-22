@@ -1,5 +1,5 @@
 {
-  "appId": "onecart-development",
+  "appId": "onecart.app",
   "appName": "onecart",
   "bundledWebRuntime": false,
   "npmClient": "npm",
@@ -7,11 +7,12 @@
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0
+    },
+    "CapacitorFirebaseAuth": {
+      "providers": ["google.com, phone"],
+      "languageCode": "en",
+      "nativeAuth": false
     }
   },
-  "cordova": {},
-  "server": {
-    "url": "http://192.168.0.15:8100",
-    "cleartext": true
-  }
+  "cordova": {}
 }

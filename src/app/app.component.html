@@ -21,14 +21,14 @@
                 <ion-title>Menu</ion-title>
             </ion-toolbar>
         </ion-header>
-        <ion-content *ngIf="household$ | async">
+        <ion-content>
             <ion-list>
                 <ion-item button (click)="signOut()">
                     <ion-icon name="log-out-outline" slot="start"></ion-icon>
                     Logout
                 </ion-item>
             </ion-list>
-            <div slot="fixed" class="household-info">
+            <div slot="fixed" class="household-info" *ngIf="household$ | async">
                 <div class="household-info-name">
                     {{ (household$ | async)?.householdName }}
                 </div>

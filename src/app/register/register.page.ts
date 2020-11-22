@@ -84,7 +84,7 @@ export class RegisterPage implements OnDestroy {
         return this.registrationFormGroup.get('phoneNumber');
     }
 
-    public signOut(): void {
-        this._authentiationService.signOut();
+    public async signOut(): Promise<void> {
+        await this._authentiationService.signOut();
     }
 }
