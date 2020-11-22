@@ -4,7 +4,6 @@ import format from 'date-fns/format';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { formatMoney } from 'src/app/helpers/format.helpers';
-import { stringToRoute } from 'src/app/helpers/route.helpers';
 import { Category } from 'src/app/models/category.model';
 import { Item, ItemState } from 'src/app/models/item.model';
 import { CategoriesService } from 'src/app/services/categories.service';

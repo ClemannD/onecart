@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="false">
+<ion-content [fullscreen]="false" [scrollY]="false">
     <div class="household-options-wrapper">
         <div class="household-options">
             <div
@@ -77,7 +77,7 @@
                     class="household-option-cta"
                     *ngIf="currentState !== householdPageState.JoinHousehold"
                 >
-                    Join an exisitng <br />Household
+                    Join an existing <br />Household
                 </div>
 
                 <div
@@ -85,7 +85,7 @@
                     *ngIf="currentState === householdPageState.JoinHousehold"
                 >
                     <div class="household-option-header">
-                        Join an exisitng Household
+                        Join an existing Household
                     </div>
 
                     <form

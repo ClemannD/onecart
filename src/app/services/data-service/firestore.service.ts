@@ -18,49 +18,108 @@ export class FirestoreService implements AbstractDataService {
         Household
     >('households');
 
-    public household$ = this._authenticationService.user$.pipe(
-        switchMap((user) => {
-            if (user?.refHouseholdKey) {
-                return this._angularFirestore
-                    .collection<Household>('households', (ref) =>
-                        ref.where('householdKey', '==', user.refHouseholdKey)
-                    )
-                    .valueChanges();
-            }
-            return of({});
-        }),
-        map((households) => (households ? households[0] : null))
-    );
+    public household$: Observable<Household>;
+    public items$: Observable<Item[]>;
+    public categories$: Observable<Category[]>;
+    // public household$ = this._authenticationService.user$.pipe(
+    //     switchMap((user) => {
+    //         if (user?.refHouseholdKey) {
+    //             return this._angularFirestore
+    //                 .collection<Household>('households', (ref) =>
+    //                     ref.where('householdKey', '==', user.refHouseholdKey)
+    //                 )
+    //                 .valueChanges();
+    //         }
+    //         return of({});
+    //     }),
+    //     map((households) => (households ? households[0] : null))
+    // );
 
-    public items$ = this._authenticationService.user$.pipe(
-        switchMap((user) => {
-            if (user?.refHouseholdKey) {
-                return this._angularFirestore
-                    .collection<Item>('items', (ref) =>
-                        ref.where('refHouseholdKey', '==', user.refHouseholdKey)
-                    )
-                    .valueChanges();
-            }
-            return of([]);
-        })
-    );
-    public categories$ = this._authenticationService.user$.pipe(
-        switchMap((user) => {
-            if (user?.refHouseholdKey) {
-                return this._angularFirestore
-                    .collection<Category>('categories', (ref) =>
-                        ref.where('refHouseholdKey', '==', user.refHouseholdKey)
-                    )
-                    .valueChanges();
-            }
-            return of([]);
-        })
-    );
+    // public items$ = this._authenticationService.user$.pipe(
+    //     switchMap((user) => {
+    //         if (user?.refHouseholdKey) {
+    //             return this._angularFirestore
+    //                 .collection<Item>('items', (ref) =>
+    //                     ref.where('refHouseholdKey', '==', user.refHouseholdKey)
+    //                 )
+    //                 .valueChanges();
+    //         }
+    //         return of([]);
+    //     })
+    // );
+    // public categories$ = this._authenticationService.user$.pipe(
+    //     switchMap((user) => {
+    //         if (user?.refHouseholdKey) {
+    //             return this._angularFirestore
+    //                 .collection<Category>('categories', (ref) =>
+    //                     ref.where('refHouseholdKey', '==', user.refHouseholdKey)
+    //                 )
+    //                 .valueChanges();
+    //         }
+    //         return of([]);
+    //     })
+    // );
 
     constructor(
         private _angularFirestore: AngularFirestore,
         private _authenticationService: AuthenticationService
     ) {}
+
+    public initializeApp(): void {
+        this._authenticationService.initalizeApp();
+
+        this.household$ = this._authenticationService.user$.pipe(
+            switchMap((user) => {
+                if (user?.refHouseholdKey) {
+                    return this._angularFirestore
+                        .collection<Household>('households', (ref) =>
+                            ref.where(
+                                'householdKey',
+                                '==',
+                                user.refHouseholdKey
+                            )
+                        )
+                        .valueChanges();
+                }
+                return of({});
+            }),
+            map((households) => (households ? households[0] : null))
+        );
+
+        this.items$ = this._authenticationService.user$.pipe(
+            switchMap((user) => {
+                if (user?.refHouseholdKey) {
+                    return this._angularFirestore
+                        .collection<Item>('items', (ref) =>
+                            ref.where(
+                                'refHouseholdKey',
+                                '==',
+                                user.refHouseholdKey
+                            )
+                        )
+                        .valueChanges();
+                }
+                return of([]);
+            })
+        );
+
+        this.categories$ = this._authenticationService.user$.pipe(
+            switchMap((user) => {
+                if (user?.refHouseholdKey) {
+                    return this._angularFirestore
+                        .collection<Category>('categories', (ref) =>
+                            ref.where(
+                                'refHouseholdKey',
+                                '==',
+                                user.refHouseholdKey
+                            )
+                        )
+                        .valueChanges();
+                }
+                return of([]);
+            })
+        );
+    }
 
     public generateUid(): string {
         return this._angularFirestore.createId();

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable({
@@ -15,6 +15,7 @@ export class RegisterPageGuard implements CanActivate {
 
     canActivate(): Observable<boolean | UrlTree> {
         return this._authenticationService.user$.pipe(
+            // filter((user) => user.userKey !== '1'),
             map((user) => {
                 if (
                     !!user &&

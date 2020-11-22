@@ -12,6 +12,7 @@ export class AbstractDataService {
 
     constructor() {}
 
+    public initializeApp: () => void;
     public generateUid: () => string;
 
     public createItem: (item: Item) => void;

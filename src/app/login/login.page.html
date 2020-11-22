@@ -4,13 +4,179 @@
     </div>
 
     <p class="p-larger fw-light ta-center login-instructions">
-        Use your phone Number to get a <br />One Time Password to
+        Use your Phone Number to get a <br />One Time Password to
         <b>Login</b> or
         <b>Register</b>
     </p>
 
     <div #loginFormBox class="login-form" [@fadeIn]>
-        <form [formGroup]="loginFormGroup" (ngSubmit)="submitPhoneNumber()">
+        <div class="password-log-in" *ngIf="showPasswordLogin">
+            <form
+                *ngIf="showCreateAccountForm"
+                [formGroup]="createAccountFormGroup"
+                (ngSubmit)="submitCreateAccountForm()"
+            >
+                <app-input
+                    inputLabel="Email"
+                    type="email"
+                    inputmode="email"
+                    autocomplete="email"
+                    formControlName="email"
+                    [formControl]="createEmailFormConrol"
+                >
+                    <div *ngIf="createEmailFormConrol.errors?.required">
+                        Please enter your email eddress
+                    </div>
+
+                    <div *ngIf="createEmailFormConrol.errors?.email">
+                        Please enter a valid email eddress
+                    </div>
+                </app-input>
+                <app-input
+                    inputLabel="Password"
+                    type="password"
+                    inputmode="password"
+                    autocomplete="password"
+                    formControlName="password"
+                    [formControl]="createPasswordFormConrol"
+                >
+                    <div *ngIf="createPasswordFormConrol.errors?.required">
+                        Please enter a password
+                    </div>
+                </app-input>
+                <app-input
+                    inputLabel="Confirm Password"
+                    type="password"
+                    inputmode="password"
+                    autocomplete="password"
+                    formControlName="confirmPassword"
+                    [formControl]="createConfirmPasswordFormConrol"
+                >
+                    <div
+                        *ngIf="createConfirmPasswordFormConrol.errors?.required"
+                    >
+                        Please confirm your password
+                    </div>
+                    <ng-container
+                        *ngIf="!createConfirmPasswordFormConrol.errors?.required"
+                    >
+                        <div *ngIf="passwordsDoNotMatch">
+                            Password do not match
+                        </div>
+                        <div
+                            *ngIf="(createAccountError$ | async) === authErrorType.WeakPasword"
+                        >
+                            Password is too weak
+                        </div>
+                        <div
+                            *ngIf="(createAccountError$ | async) === authErrorType.EmailExists"
+                        >
+                            This email is already in use
+                        </div>
+                        <div
+                            *ngIf="(createAccountError$ | async) === authErrorType.GenericCreateError"
+                        >
+                            There was an error creating your account, please try
+                            again
+                        </div>
+                    </ng-container>
+                </app-input>
+                <app-button
+                    class="login-button"
+                    type="submit"
+                    [submitting]="submittingCreateAccountForm"
+                >
+                    Create Account
+                </app-button>
+                <app-button
+                    *ngIf="!submittingCreateAccountForm"
+                    fill="clear"
+                    (buttonClick)="showCreateAccountForm = false"
+                >
+                    Sign In
+                </app-button>
+            </form>
+
+            <form
+                *ngIf="!showCreateAccountForm"
+                [formGroup]="passwordLoginFormGroup"
+                (ngSubmit)="submitPasswordLoginForm()"
+            >
+                <app-input
+                    inputLabel="Email"
+                    type="email"
+                    inputmode="email"
+                    autocomplete="email"
+                    formControlName="email"
+                    [formControl]="loginEmailFormConrol"
+                >
+                    <div *ngIf="loginEmailFormConrol.errors?.required">
+                        Please enter your email eddress
+                    </div>
+
+                    <div *ngIf="loginEmailFormConrol.errors?.email">
+                        Please enter a valid email eddress
+                    </div>
+                </app-input>
+                <app-input
+                    inputLabel="Password"
+                    type="password"
+                    inputmode="password"
+                    autocomplete="password"
+                    formControlName="password"
+                    [formControl]="loginPasswordFormConrol"
+                >
+                    <div *ngIf="loginPasswordFormConrol.errors?.required">
+                        Please enter a password
+                    </div>
+                    <ng-container
+                        *ngIf="!loginPasswordFormConrol.errors?.required"
+                    >
+                        <div
+                            *ngIf="(authenticationError$ | async) === authErrorType.EmailNotFound"
+                        >
+                            No user found with this email
+                        </div>
+                        <div
+                            *ngIf="(createAccountError$ | async) === authErrorType.InvalidPassword"
+                        >
+                            Invalid password
+                        </div>
+                        <div
+                            *ngIf="(createAccountError$ | async) === authErrorType.GenericLoginError"
+                        >
+                            There was an error signing you in, please try again
+                        </div>
+                    </ng-container>
+                </app-input>
+
+                <app-button
+                    class="login-button"
+                    type="submit"
+                    [submitting]="submittingPasswordSignInForm"
+                >
+                    Sign In
+                </app-button>
+                <app-button
+                    *ngIf="!submittingPasswordSignInForm"
+                    fill="clear"
+                    (buttonClick)="showCreateAccountForm = true"
+                >
+                    Create an Account
+                </app-button>
+            </form>
+        </div>
+        <!-- <div class="google-sign-in" *ngIf="!allowPhoneLogin">
+            <app-button (buttonClick)="signInWithGoogle()">
+                Sign in with Google
+            </app-button>
+        </div> -->
+
+        <form
+            [formGroup]="phoneLoginFormGroup"
+            (ngSubmit)="submitPhoneNumber()"
+            *ngIf="allowPhoneLogin"
+        >
             <app-input
                 inputLabel="Phone Number"
                 type="tel"

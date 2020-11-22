@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Household } from '../models/household.model';
 import { AuthenticationService } from './authentication.service';
@@ -6,12 +7,17 @@ import { AbstractDataService } from './data-service/abstract-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class HouseholdService {
-    public household$ = this._dataService.household$;
+    public household$: Observable<Household>;
+    // public household$ = this._dataService.household$;
 
     constructor(
         @Inject(AbstractDataService) private _dataService: AbstractDataService,
         private _authService: AuthenticationService
     ) {}
+
+    public initialize(): void {
+        this.household$ = this._dataService.household$;
+    }
 
     public async saveHousehold(household: Household): Promise<void> {
         if (!household.householdKey) {
