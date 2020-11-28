@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">onecart</string>
+    <string name="title_activity_main">onecart</string>
+    <string name="package_name">onecart.app</string>
+    <string name="custom_url_scheme">onecart.app</string>
+</resources>
