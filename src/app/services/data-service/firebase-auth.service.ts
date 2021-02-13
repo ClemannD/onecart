@@ -9,15 +9,7 @@ import {
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { AngularFirestore } from '@angular/fire/firestore';
-import {
-    first,
-    map,
-    shareReplay,
-    startWith,
-    switchMap,
-    take,
-    tap
-} from 'rxjs/operators';
+import { first, map, shareReplay, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { cfaSignIn } from 'capacitor-firebase-auth';
 
@@ -42,8 +34,6 @@ export class FirebaseAuthService implements AbstractAuthDataService {
     public awaitingVerificationCode$ = this._awaitingVerificationCodeSubject.asObservable();
 
     private _firebaseUserSubject = new ReplaySubject<firebase.User>();
-    // public user$ = this._userSubject.asObservable();
-    // public user$: Observable<User>;
     public user$ = this._firebaseUserSubject.asObservable().pipe(
         switchMap((firebaseUser) => {
             return firebaseUser
@@ -57,46 +47,16 @@ export class FirebaseAuthService implements AbstractAuthDataService {
         }),
         shareReplay(1)
     );
-    // public user$ = this._angularFireAuth.authState.pipe(
-    //     switchMap((firebaseUser) => {
-    //         console.log('firebase user');
-    //         console.log(firebaseUser);
-    //         return firebaseUser
-    //             ? this._angularFirestore
-    //                   .collection<User>('users', (ref) =>
-    //                       ref.where('userKey', '==', firebaseUser.uid)
-    //                   )
-    //                   .valueChanges()
-    //                   .pipe(map((users) => users[0] || null))
-    //             : of(null);
-    //     })
-    // );
 
     constructor(
         private _windowService: WindowService,
         private _angularFireAuth: AngularFireAuth,
         private _angularFirestore: AngularFirestore,
         private _router: Router
-    ) {
-        this.user$.subscribe((user) => {
-            console.log(user);
-        });
-    }
+    ) {}
 
     public initializeApp(): void {
-        // this.user$ = of({
-        //     email: 'dmarco@clemann.com',
-        //     firstName: 'Dylan',
-        //     lastName: 'Clemann',
-        //     phoneNumber: '+19415807122',
-        //     refHouseholdKey: 'KKn1koXvGIhPzKhF8bNV',
-        //     userKey: 'eEkJT50UuQZmkBP7CJvYwn4m6OH3'
-        // });
         firebase.auth().onAuthStateChanged((firebaseUser) => {
-            // console.log(firebaseUser);
-            console.log('authStateChanged');
-            console.log(firebaseUser);
-
             this._firebaseUserSubject.next(firebaseUser);
         });
     }
@@ -126,7 +86,9 @@ export class FirebaseAuthService implements AbstractAuthDataService {
             );
         } catch (error) {
             if (error.code === 'auth/weak-password') {
-                this._createAccountErrorSubject.next(AuthErrorType.WeakPasword);
+                this._createAccountErrorSubject.next(
+                    AuthErrorType.WeakPassword
+                );
             } else if (error.code === 'auth/email-already-in-use') {
                 this._createAccountErrorSubject.next(AuthErrorType.EmailExists);
             } else {
@@ -137,12 +99,14 @@ export class FirebaseAuthService implements AbstractAuthDataService {
         }
     }
 
+    public async updateUser(user: User): Promise<void> {
+        await this._usersCollection.doc(user.userKey).set(user);
+    }
+
     public async signInWithPassword(credentials: {
         email: string;
         password: string;
     }): Promise<void> {
-        console.log(credentials);
-
         try {
             const firebaseCredential = await this._angularFireAuth.signInWithEmailAndPassword(
                 credentials.email,
@@ -169,13 +133,13 @@ export class FirebaseAuthService implements AbstractAuthDataService {
         }
     }
 
+    public async resetPasswordByEmail(email: string): Promise<void> {
+        await this._angularFireAuth.sendPasswordResetEmail(email);
+    }
+
     public async signInWithGoogle(): Promise<void> {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        const firenaseUser = await cfaSignIn('google.com').toPromise();
-        // const credential = await this._angularFireAuth.signInWithPopup(
-        //     provider
-        // );
-        return this._loginUserByEmail(firenaseUser);
+        const firebaseUser = await cfaSignIn('google.com').toPromise();
+        return this._loginUserByEmail(firebaseUser);
     }
 
     public async signOut(): Promise<void> {
@@ -217,10 +181,6 @@ export class FirebaseAuthService implements AbstractAuthDataService {
             });
     }
 
-    public async updateUser(user: User): Promise<void> {
-        await this._usersCollection.doc(user.userKey).set(user);
-    }
-
     private async _loginUserByPhoneNumber(
         firebaseUser: firebase.User
     ): Promise<void> {
@@ -256,7 +216,6 @@ export class FirebaseAuthService implements AbstractAuthDataService {
                 .pipe(first())
                 .toPromise()
         )[0];
-        console.log(user);
 
         if (!user) {
             const newUser = {
@@ -268,9 +227,7 @@ export class FirebaseAuthService implements AbstractAuthDataService {
                 .set(newUser);
         }
         this._firebaseUserSubject.next(firebaseUser);
-        console.log('navigating to home');
 
         await this._router.navigateByUrl('/tabs/home');
-        console.log('after navigating to home');
     }
 }

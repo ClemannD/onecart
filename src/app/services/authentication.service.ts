@@ -9,16 +9,7 @@ import { AbstractAuthDataService } from './data-service/abstract-auth-data.servi
     providedIn: 'root'
 })
 export class AuthenticationService {
-    // public user$ = of({
-    //     email: 'dmarco@clemann.com',
-    //     firstName: 'Dylan',
-    //     lastName: 'Clemann',
-    //     phoneNumber: '+19415807122',
-    //     refHouseholdKey: 'KKn1koXvGIhPzKhF8bNV',
-    //     userKey: 'eEkJT50UuQZmkBP7CJvYwn4m6OH3'
-    // });
     public user$: Observable<User>;
-    // public user$ = this._authDataService.user$;
     public authenticationError$ = this._authDataService.authenticationError$;
     public createAccountError$ = this._authDataService.createAccountError$;
 
@@ -54,6 +45,9 @@ export class AuthenticationService {
     public async signInWithPassword(credentials): Promise<void> {
         this._isLoggingInSubject.next(true);
         await this._authDataService.signInWithPassword(credentials);
+    }
+    public async resetPasswordByEmail(email: string): Promise<void> {
+        await this._authDataService.resetPasswordByEmail(email);
     }
 
     public async createAccount(credentials): Promise<void> {

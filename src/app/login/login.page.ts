@@ -24,6 +24,7 @@ export class LoginPage implements OnInit, OnDestroy {
     public showPasswordLogin = true;
 
     public showCreateAccountForm = false;
+    public showResetPasswordForm = false;
 
     public user$ = this._authentiationService.user$;
     public authenticationError$ = this._authentiationService
@@ -37,6 +38,7 @@ export class LoginPage implements OnInit, OnDestroy {
     public phoneLoginFormGroup: FormGroup;
     public createAccountFormGroup: FormGroup;
     public passwordLoginFormGroup: FormGroup;
+    public resetPasswordFormGroup: FormGroup;
 
     public phoneNumberRegex = phoneNumberRegex;
     public verificationCodeRegex = verificationCodeRegex;
@@ -46,6 +48,8 @@ export class LoginPage implements OnInit, OnDestroy {
     public submittingCreateAccountForm = false;
     public submittingPasswordSignInForm = false;
     public submittingVerificationCode = false;
+    public submittingResetPasswordByEmail = false;
+    public submittedResetPasswordByEmail = false;
 
     private _authenticationErrorSub: Subscription;
 
@@ -55,8 +59,6 @@ export class LoginPage implements OnInit, OnDestroy {
         private _authentiationService: AuthenticationService,
         private _formBuilder: FormBuilder
     ) {
-        console.log('constructor login');
-
         this._authenticationErrorSub = this.authenticationError$.subscribe(
             (error) => {
                 if (error) {
@@ -91,6 +93,9 @@ export class LoginPage implements OnInit, OnDestroy {
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required]]
         });
+        this.resetPasswordFormGroup = this._formBuilder.group({
+            email: ['', [Validators.required, Validators.email]]
+        });
 
         // await this._authentiationService.initializeLogin();
     }
@@ -107,6 +112,19 @@ export class LoginPage implements OnInit, OnDestroy {
             this._authentiationService.submitPhoneNumber(
                 this.phoneNumberFormControl.value
             );
+        }
+    }
+
+    public async sendResetPasswordEmail(): Promise<void> {
+        this.resetPasswordFormGroup.markAsTouched();
+        if (this.resetPasswordFormGroup.valid) {
+            this.submittingResetPasswordByEmail = true;
+
+            await this._authentiationService.resetPasswordByEmail(
+                this.resetPasswordEmailFormControl.value
+            );
+            this.submittingResetPasswordByEmail = false;
+            this.submittedResetPasswordByEmail = true;
         }
     }
 
@@ -138,16 +156,16 @@ export class LoginPage implements OnInit, OnDestroy {
 
         if (this.createAccountFormGroup.valid) {
             if (
-                this.createPasswordFormConrol.value !==
-                this.createConfirmPasswordFormConrol.value
+                this.createPasswordFormControl.value !==
+                this.createConfirmPasswordFormControl.value
             ) {
                 this.passwordsDoNotMatch = true;
             } else {
                 this.submittingCreateAccountForm = true;
 
                 await this._authentiationService.createAccount({
-                    email: this.createEmailFormConrol.value,
-                    password: this.createPasswordFormConrol.value
+                    email: this.createEmailFormControl.value,
+                    password: this.createPasswordFormControl.value
                 });
                 this.submittingCreateAccountForm = false;
             }
@@ -156,13 +174,12 @@ export class LoginPage implements OnInit, OnDestroy {
 
     public async submitPasswordLoginForm(): Promise<void> {
         this.passwordLoginFormGroup.markAllAsTouched();
-        console.log(this.passwordLoginFormGroup.valid);
 
         if (this.passwordLoginFormGroup.valid) {
             this.submittingPasswordSignInForm = true;
             await this._authentiationService.signInWithPassword({
-                email: this.loginEmailFormConrol.value,
-                password: this.loginPasswordFormConrol.value
+                email: this.loginEmailFormControl.value,
+                password: this.loginPasswordFormControl.value
             });
             this.submittingPasswordSignInForm = false;
         }
@@ -175,20 +192,24 @@ export class LoginPage implements OnInit, OnDestroy {
         return this.phoneLoginFormGroup.get('verificationCode');
     }
 
-    public get createEmailFormConrol() {
+    public get createEmailFormControl() {
         return this.createAccountFormGroup.get('email');
     }
-    public get createPasswordFormConrol() {
+    public get createPasswordFormControl() {
         return this.createAccountFormGroup.get('password');
     }
-    public get createConfirmPasswordFormConrol() {
+    public get createConfirmPasswordFormControl() {
         return this.createAccountFormGroup.get('confirmPassword');
     }
 
-    public get loginEmailFormConrol() {
+    public get loginEmailFormControl() {
         return this.passwordLoginFormGroup.get('email');
     }
-    public get loginPasswordFormConrol() {
+    public get loginPasswordFormControl() {
         return this.passwordLoginFormGroup.get('password');
+    }
+
+    public get resetPasswordEmailFormControl() {
+        return this.resetPasswordFormGroup.get('email');
     }
 }

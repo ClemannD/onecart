@@ -89,30 +89,6 @@ export class CategoriesPage implements AfterViewInit, OnDestroy {
             }
         });
 
-        // combineLatest([this.category$, this.categoryElements.changes])
-        //     .pipe(distinctUntilChanged((prev, curr) => prev[0] === curr[0]))
-        //     .subscribe(([category, categoryElements]) => {
-        //         for (let i = 0; i < categoryElements._results.length; i++) {
-        //             if (
-        //                 categoryElements._results[i].nativeElement.id ===
-        //                 category.categoryRoute
-        //             ) {
-        //                 const headerFooterHieght = 120;
-
-        //                 const categoryHeight =
-        //                     categoryElements._results[i].nativeElement
-        //                         .children[0].children[0].offsetHeight;
-        //                 console.log(categoryHeight);
-        //                 console.log(window.innerHeight - headerFooterHieght);
-
-        //                 this._shouldScrollYSubject.next(
-        //                     categoryHeight >
-        //                         window.innerHeight - headerFooterHieght
-        //                 );
-        //             }
-        //         }
-        //     });
-
         combineLatest([this.category$, this.categoryElements.changes])
             .pipe(distinctUntilChanged((prev, curr) => prev[0] === curr[0]))
             .subscribe(([category, categoryElements]) => {

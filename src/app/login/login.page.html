@@ -4,7 +4,7 @@
     </div>
 
     <p class="p-larger fw-light ta-center login-instructions">
-        Use your Phone Number to get a <br />One Time Password to
+        <!-- Use your Phone Number to get a <br />One Time Password to -->
         <b>Login</b> or
         <b>Register</b>
     </p>
@@ -22,14 +22,14 @@
                     inputmode="email"
                     autocomplete="email"
                     formControlName="email"
-                    [formControl]="createEmailFormConrol"
+                    [formControl]="createEmailFormControl"
                 >
-                    <div *ngIf="createEmailFormConrol.errors?.required">
-                        Please enter your email eddress
+                    <div *ngIf="createEmailFormControl.errors?.required">
+                        Please enter your email address
                     </div>
 
-                    <div *ngIf="createEmailFormConrol.errors?.email">
-                        Please enter a valid email eddress
+                    <div *ngIf="createEmailFormControl.errors?.email">
+                        Please enter a valid email address
                     </div>
                 </app-input>
                 <app-input
@@ -38,9 +38,9 @@
                     inputmode="password"
                     autocomplete="password"
                     formControlName="password"
-                    [formControl]="createPasswordFormConrol"
+                    [formControl]="createPasswordFormControl"
                 >
-                    <div *ngIf="createPasswordFormConrol.errors?.required">
+                    <div *ngIf="createPasswordFormControl.errors?.required">
                         Please enter a password
                     </div>
                 </app-input>
@@ -50,21 +50,21 @@
                     inputmode="password"
                     autocomplete="password"
                     formControlName="confirmPassword"
-                    [formControl]="createConfirmPasswordFormConrol"
+                    [formControl]="createConfirmPasswordFormControl"
                 >
                     <div
-                        *ngIf="createConfirmPasswordFormConrol.errors?.required"
+                        *ngIf="createConfirmPasswordFormControl.errors?.required"
                     >
                         Please confirm your password
                     </div>
                     <ng-container
-                        *ngIf="!createConfirmPasswordFormConrol.errors?.required"
+                        *ngIf="!createConfirmPasswordFormControl.errors?.required"
                     >
                         <div *ngIf="passwordsDoNotMatch">
                             Password do not match
                         </div>
                         <div
-                            *ngIf="(createAccountError$ | async) === authErrorType.WeakPasword"
+                            *ngIf="(createAccountError$ | async) === authErrorType.WeakPassword"
                         >
                             Password is too weak
                         </div>
@@ -98,7 +98,7 @@
             </form>
 
             <form
-                *ngIf="!showCreateAccountForm"
+                *ngIf="!showCreateAccountForm && !showResetPasswordForm"
                 [formGroup]="passwordLoginFormGroup"
                 (ngSubmit)="submitPasswordLoginForm()"
             >
@@ -108,14 +108,14 @@
                     inputmode="email"
                     autocomplete="email"
                     formControlName="email"
-                    [formControl]="loginEmailFormConrol"
+                    [formControl]="loginEmailFormControl"
                 >
-                    <div *ngIf="loginEmailFormConrol.errors?.required">
-                        Please enter your email eddress
+                    <div *ngIf="loginEmailFormControl.errors?.required">
+                        Please enter your email address
                     </div>
 
-                    <div *ngIf="loginEmailFormConrol.errors?.email">
-                        Please enter a valid email eddress
+                    <div *ngIf="loginEmailFormControl.errors?.email">
+                        Please enter a valid email address
                     </div>
                 </app-input>
                 <app-input
@@ -124,13 +124,13 @@
                     inputmode="password"
                     autocomplete="password"
                     formControlName="password"
-                    [formControl]="loginPasswordFormConrol"
+                    [formControl]="loginPasswordFormControl"
                 >
-                    <div *ngIf="loginPasswordFormConrol.errors?.required">
+                    <div *ngIf="loginPasswordFormControl.errors?.required">
                         Please enter a password
                     </div>
                     <ng-container
-                        *ngIf="!loginPasswordFormConrol.errors?.required"
+                        *ngIf="!loginPasswordFormControl.errors?.required"
                     >
                         <div
                             *ngIf="(authenticationError$ | async) === authErrorType.EmailNotFound"
@@ -138,12 +138,12 @@
                             No user found with this email
                         </div>
                         <div
-                            *ngIf="(createAccountError$ | async) === authErrorType.InvalidPassword"
+                            *ngIf="(authenticationError$ | async) === authErrorType.InvalidPassword"
                         >
                             Invalid password
                         </div>
                         <div
-                            *ngIf="(createAccountError$ | async) === authErrorType.GenericLoginError"
+                            *ngIf="(authenticationError$ | async) === authErrorType.GenericLoginError"
                         >
                             There was an error signing you in, please try again
                         </div>
@@ -160,6 +160,14 @@
                 <app-button
                     *ngIf="!submittingPasswordSignInForm"
                     fill="clear"
+                    [style.margin-bottom]="'2rem'"
+                    (buttonClick)="showResetPasswordForm = true"
+                >
+                    Forgot Password
+                </app-button>
+                <app-button
+                    *ngIf="!submittingPasswordSignInForm"
+                    fill="clear"
                     (buttonClick)="showCreateAccountForm = true"
                 >
                     Create an Account
@@ -171,6 +179,52 @@
                 Sign in with Google
             </app-button>
         </div> -->
+
+        <form
+            [formGroup]="resetPasswordFormGroup"
+            (ngSubmit)="sendResetPasswordEmail()"
+            *ngIf="showResetPasswordForm"
+        >
+            <app-input
+                *ngIf="!submittedResetPasswordByEmail"
+                inputLabel="Email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                formControlName="email"
+                [formControl]="resetPasswordEmailFormControl"
+            >
+                <div *ngIf="resetPasswordFormGroup.errors?.required">
+                    Please enter your email address
+                </div>
+
+                <div *ngIf="resetPasswordFormGroup.errors?.email">
+                    Please enter a valid email address
+                </div>
+            </app-input>
+
+            <app-button
+                *ngIf="!submittedResetPasswordByEmail"
+                class="login-button"
+                type="submit"
+                [submitting]="submittingResetPasswordByEmail"
+            >
+                Send email to Reset Password
+            </app-button>
+
+            <div *ngIf="submittedResetPasswordByEmail">
+                An email has been sent with instructions to reset your password.
+                Once reset, you may login with your new password.
+                <br />
+                <br />
+                <app-button
+                    fill="clear"
+                    (buttonClick)="showCreateAccountForm = false; showResetPasswordForm = false;"
+                >
+                    Go Back
+                </app-button>
+            </div>
+        </form>
 
         <form
             [formGroup]="phoneLoginFormGroup"

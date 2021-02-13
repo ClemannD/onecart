@@ -7,7 +7,7 @@ export enum AuthErrorType {
     InvalidPassword = 2,
     EmailExists = 3,
     EmailNotFound = 4,
-    WeakPasword = 5,
+    WeakPassword = 5,
     GenericCreateError = 6,
     GenericLoginError = 7
 }
@@ -27,6 +27,7 @@ export class AbstractAuthDataService {
     public signOut: () => void;
 
     public signInWithGoogle: () => void;
+    public resetPasswordByEmail: (email: string) => Promise<void>;
     public createAccount: (credentials: {
         email: string;
         password: string;

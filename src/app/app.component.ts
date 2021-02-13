@@ -40,7 +40,6 @@ export class AppComponent {
 
     private _initializeApp() {
         this.platform.ready().then(() => {
-            console.log('device ready');
             this.statusBar.styleDefault();
             this.splashScreen.hide();
             this._dataService.initializeApp();
