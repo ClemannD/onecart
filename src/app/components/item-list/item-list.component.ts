@@ -12,7 +12,10 @@ import { AddModalService } from 'src/app/tabs/modals/add-modal.service';
         <div class="item-list">
             <ion-spinner *ngIf="!(items$ | async)"></ion-spinner>
             <ng-container *ngIf="!!(items$ | async)">
-                <div *ngIf="!(items$ | async)?.length" class="no-items">
+                <div
+                    *ngIf="!(items$ | async)?.length && !disableEdit"
+                    class="no-items"
+                >
                     <div class="no-items-label">
                         There are no items yet in this category.
                     </div>
@@ -39,6 +42,7 @@ import { AddModalService } from 'src/app/tabs/modals/add-modal.service';
                             >{{ formatMoney(item.itemCost) }}
                         </div>
                         <ion-icon
+                            *ngIf="!disableEdit"
                             class="edit-button"
                             name="ios-chevron-right"
                         ></ion-icon>
@@ -82,6 +86,8 @@ export class ItemListComponent {
     }
 
     public handleEditItemClick(item: Item): void {
-        this._addModalService.showItemModal(item);
+        if (!this.disableEdit) {
+            this._addModalService.showItemModal(item);
+        }
     }
 }

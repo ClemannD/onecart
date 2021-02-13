@@ -1,0 +1,18 @@
+@import 'src/theme/variables.scss';
+
+.category-wrapper {
+    padding: 1rem;
+    margin-top: 2rem;
+    background-color: $grey-lightest;
+    border-radius: 10px;
+}
+.no-items {
+    height: 10rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2.4rem;
+    font-weight: bold;
+}

@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { AddModalState } from 'src/app/constants/common';
 import { Category } from 'src/app/models/category.model';
 import { Item } from 'src/app/models/item.model';
+import { CategoriesService } from 'src/app/services/categories.service';
 
 @Component({
     selector: 'add-modal',
@@ -53,9 +54,20 @@ export class AddModalComponent implements OnInit {
 
     public addModalState = AddModalState;
 
-    constructor(private _modalController: ModalController) {}
+    constructor(
+        private _modalController: ModalController,
+        private _categoriesService: CategoriesService
+    ) {}
 
-    ngOnInit() {}
+    public async ngOnInit() {
+        this._categoriesService.currentCategory$.subscribe((category) => {
+            this.item = category
+                ? {
+                      refCategoryKey: category.categoryKey
+                  }
+                : this.item;
+        });
+    }
 
     public showAddItemForm(): void {
         this.modalState = AddModalState.AddItem;

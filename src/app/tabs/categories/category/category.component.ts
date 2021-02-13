@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { formatMoney } from 'src/app/helpers/format.helpers';
 import { Category } from 'src/app/models/category.model';
-import { Item, ItemState } from 'src/app/models/item.model';
+import { Item } from 'src/app/models/item.model';
 import { ItemsService } from 'src/app/services/items.service';
 import { AddModalService } from '../../modals/add-modal.service';
 
@@ -75,7 +75,7 @@ import { AddModalService } from '../../modals/add-modal.service';
         </div>
     `
 })
-export class CategoryComponent implements OnInit, OnChanges {
+export class CategoryComponent implements OnChanges {
     @Input() public category: Category;
     @Input() public isFirst = false;
     @Input() public isLast = false;
@@ -99,8 +99,6 @@ export class CategoryComponent implements OnInit, OnChanges {
             this.initializeDataPoints();
         }
     }
-
-    public ngOnInit(): void {}
 
     public handleEditClick() {
         this._addModalService.showCategoryModal(this.category);

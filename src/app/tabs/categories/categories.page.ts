@@ -13,16 +13,10 @@ import {
     BehaviorSubject,
     combineLatest,
     Observable,
-    of,
     Subject,
     Subscription
 } from 'rxjs';
-import {
-    distinctUntilChanged,
-    map,
-    skip,
-    withLatestFrom
-} from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Category } from 'src/app/models/category.model';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { WindowService } from 'src/app/services/window.service';
@@ -48,21 +42,11 @@ export class CategoriesPage implements AfterViewInit, OnDestroy {
     public categories$: Observable<Category[]> = this._categoriesService
         .categories$;
 
-    public category$: Observable<Category> = combineLatest([
-        this.horizontalScrollLeft$,
-        this.categories$
-    ]).pipe(
-        map(([horizontalScroll, categories]) => {
-            let categoryIndex = parseInt(
-                (horizontalScroll / window.innerWidth).toFixed(0)
-            );
-            categoryIndex = categoryIndex < 0 ? 0 : categoryIndex;
-            return categories[categoryIndex];
-        })
-    );
+    public category$: Observable<Category> = this._categoriesService
+        .currentCategory$;
 
-    private _shoudlScrollYSubject = new BehaviorSubject<boolean>(true);
-    public shouldScrollY$ = this._shoudlScrollYSubject.asObservable();
+    private _shouldScrollYSubject = new BehaviorSubject<boolean>(true);
+    public shouldScrollY$ = this._shouldScrollYSubject.asObservable();
 
     private _initialScrollSub: Subscription;
 
@@ -71,9 +55,19 @@ export class CategoriesPage implements AfterViewInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _windowService: WindowService
     ) {
-        this.shouldScrollY$.subscribe((_) => {
-            // console.log(_);
-        });
+        combineLatest([this.horizontalScrollLeft$, this.categories$])
+            .pipe(
+                map(([horizontalScroll, categories]) => {
+                    let categoryIndex = parseInt(
+                        (horizontalScroll / window.innerWidth).toFixed(0)
+                    );
+                    categoryIndex = categoryIndex < 0 ? 0 : categoryIndex;
+                    return categories[categoryIndex];
+                })
+            )
+            .subscribe((category) => {
+                this._categoriesService.currentCategory$.next(category);
+            });
     }
 
     public ngAfterViewInit(): void {
@@ -111,7 +105,7 @@ export class CategoriesPage implements AfterViewInit, OnDestroy {
         //                 console.log(categoryHeight);
         //                 console.log(window.innerHeight - headerFooterHieght);
 
-        //                 this._shoudlScrollYSubject.next(
+        //                 this._shouldScrollYSubject.next(
         //                     categoryHeight >
         //                         window.innerHeight - headerFooterHieght
         //                 );

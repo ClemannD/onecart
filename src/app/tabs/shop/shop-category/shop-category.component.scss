@@ -1,0 +1,10 @@
+@import 'src/theme/variables.scss';
+
+.shop-category {
+    margin-bottom: 2rem;
+
+    .category-name {
+        font-size: 1.6rem;
+        font-weight: bold;
+    }
+}

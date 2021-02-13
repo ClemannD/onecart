@@ -8,10 +8,17 @@ import { HouseholdService } from './household.service';
 @Injectable({ providedIn: 'root' })
 export class ItemsService {
     public items$: Observable<Item[]> = this._dataService.items$;
+    public noOutOfStockItems$ = this.items$.pipe(
+        map((items) => {
+            return !items.filter(
+                (item) => item.itemState === ItemState.OutOfStock
+            ).length;
+        })
+    );
 
     constructor(
         @Inject(AbstractDataService) private _dataService: AbstractDataService,
-        private _hosueholdService: HouseholdService
+        private _householdService: HouseholdService
     ) {}
 
     public getItemsForCategory$(categoryKey: string): Observable<Item[]> {
@@ -90,7 +97,7 @@ export class ItemsService {
     public async saveItem(item: Item): Promise<void> {
         if (!item.itemKey) {
             item.refHouseholdKey = (
-                await this._hosueholdService.household$
+                await this._householdService.household$
                     .pipe(first())
                     .toPromise()
             ).householdKey;

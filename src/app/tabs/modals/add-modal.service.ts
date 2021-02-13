@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { AddModalState } from 'src/app/constants/common';
 import { Category } from 'src/app/models/category.model';
 import { Item } from 'src/app/models/item.model';
+import { CategoriesService } from 'src/app/services/categories.service';
 import { AddModalComponent } from './add-modal.component';
 
 @Injectable({ providedIn: 'root' })
@@ -22,7 +23,7 @@ export class AddModalService {
             component: AddModalComponent,
             cssClass: 'auto-height',
             componentProps: {
-                item,
+                item: item,
                 modalState: AddModalState.AddItem
             }
         });

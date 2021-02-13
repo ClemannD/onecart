@@ -1,13 +1,20 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-title> Tab 2 </ion-title>
+<ion-header>
+    <ion-toolbar class="title-toolbar">
+        <ion-title size="large">
+            Shopping List
+            <ion-icon name="ios-shopping-basket" class="title-icon"></ion-icon>
+        </ion-title>
     </ion-toolbar>
 </ion-header>
+<ion-content [fullscreen]="false">
+    <div class="category-wrapper" *ngIf="!(emptyList$ | async)">
+        <shop-category
+            *ngFor="let category of categories$ | async"
+            [category]="category"
+        ></shop-category>
+    </div>
 
-<ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-        <ion-toolbar>
-            <ion-title size="large">Tab 2</ion-title>
-        </ion-toolbar>
-    </ion-header>
+    <div *ngIf="(emptyList$ | async)" class="no-items">
+        You have no items to buy
+    </div>
 </ion-content>
