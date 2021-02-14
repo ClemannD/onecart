@@ -61,11 +61,13 @@ export class AddModalComponent implements OnInit {
 
     public async ngOnInit() {
         this._categoriesService.currentCategory$.subscribe((category) => {
-            this.item = category
-                ? {
-                      refCategoryKey: category.categoryKey
-                  }
-                : this.item;
+            if (!this.item) {
+                this.item = category
+                    ? {
+                          refCategoryKey: category.categoryKey
+                      }
+                    : this.item;
+            }
         });
     }
 

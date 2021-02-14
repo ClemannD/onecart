@@ -25,7 +25,8 @@ export class ButtonComponent {
     @Input() public size: 'small' | 'large';
     @Input() public fill: 'solid' | 'outline' | 'clear' = 'solid';
     @Input() public type = 'button';
-    @Input() public color: 'primary' | 'white' | 'secondary' = 'primary';
+    @Input() public color: 'primary' | 'white' | 'secondary' | 'danger' =
+        'primary';
     @Output() public buttonClick = new EventEmitter();
 
     public handleButtonClick(): void {

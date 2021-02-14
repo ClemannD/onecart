@@ -17,9 +17,11 @@ export class AbstractDataService {
 
     public createItem: (item: Item) => void;
     public updateItem: (item: Item) => void;
+    public deleteItem: (itemKey: string) => void;
 
     public createCategory: (category: Category) => void;
     public updateCategory: (category: Category) => void;
+    public deleteCategory: (categoryKey: string) => void;
 
     public createHousehold: (household: Household) => void;
     public updateHousehold: (household: Household) => void;

@@ -8,7 +8,7 @@ import {
     ViewChild
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Item, ItemState } from 'src/app/models/item.model';
@@ -130,6 +130,15 @@ import { ItemsService } from 'src/app/services/items.service';
                 Save Item
             </app-button>
             <app-button
+                *ngIf="item.itemKey"
+                fill="clear"
+                color="danger"
+                [style.marginBottom]="'2rem'"
+                (buttonClick)="deleteItem()"
+            >
+                Delete Item
+            </app-button>
+            <app-button
                 color="secondary"
                 fill="clear"
                 (buttonClick)="closeModal()"
@@ -154,7 +163,8 @@ export class ItemModalComponent implements OnInit, AfterViewInit, OnDestroy {
         private _modalController: ModalController,
         private _formBuilder: FormBuilder,
         private _categoriesService: CategoriesService,
-        private _itemsService: ItemsService
+        private _itemsService: ItemsService,
+        private _alertController: AlertController
     ) {
         this._categoriesSub = this._categoriesService.categories$.subscribe(
             (categories) => {
@@ -219,6 +229,33 @@ export class ItemModalComponent implements OnInit, AfterViewInit, OnDestroy {
         this.itemCostFormControl.setValue(
             `$${this.itemCostModel}`.replace('.00', '')
         );
+    }
+
+    public async deleteItem(): Promise<void> {
+        const alert = await this._alertController.create({
+            header: 'Delete Item',
+            message: `Are you sure you want to delete ${this.item.itemName}`,
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        alert.dismiss();
+                    }
+                },
+                {
+                    text: 'Delete',
+                    handler: async () => {
+                        this._itemsService.deleteItem(this.item.itemKey);
+                        alert.dismiss();
+                        this.closeModal();
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
     public closeModal(): void {

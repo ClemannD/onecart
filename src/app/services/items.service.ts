@@ -7,7 +7,16 @@ import { HouseholdService } from './household.service';
 
 @Injectable({ providedIn: 'root' })
 export class ItemsService {
-    public items$: Observable<Item[]> = this._dataService.items$;
+    public items$: Observable<Item[]> = this._dataService.items$.pipe(
+        map((items) => {
+            return items.sort((a, b) => {
+                const itemName1 = a.itemName.toLowerCase();
+                const itemName2 = b.itemName.toLowerCase();
+                if (itemName1 == itemName2) return 0;
+                return itemName1 < itemName2 ? -1 : 1;
+            });
+        })
+    );
     public noOutOfStockItems$ = this.items$.pipe(
         map((items) => {
             return !items.filter(
@@ -107,5 +116,9 @@ export class ItemsService {
         } else {
             this._dataService.updateItem(item);
         }
+    }
+
+    public async deleteItem(itemKey: string): Promise<void> {
+        await this._dataService.deleteItem(itemKey);
     }
 }

@@ -4,6 +4,7 @@ import { first, map } from 'rxjs/operators';
 import { Category } from '../models/category.model';
 import { AbstractDataService } from './data-service/abstract-data.service';
 import { HouseholdService } from './household.service';
+import { ItemsService } from './items.service';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesService {
@@ -21,6 +22,7 @@ export class CategoriesService {
 
     constructor(
         @Inject(AbstractDataService) private _dataService: AbstractDataService,
+        private _itemsService: ItemsService,
         private _householdService: HouseholdService
     ) {}
 
@@ -37,5 +39,17 @@ export class CategoriesService {
         } else {
             this._dataService.updateCategory(category);
         }
+    }
+
+    public async deleteCategory(categoryKey: string): Promise<void> {
+        const itemsForCategory = await this._itemsService
+            .getItemsForCategory$(categoryKey)
+            .pipe(first())
+            .toPromise();
+
+        for (let i = 0; i < itemsForCategory.length; i++) {
+            await this._itemsService.deleteItem(itemsForCategory[i].itemKey);
+        }
+        await this._dataService.deleteCategory(categoryKey);
     }
 }

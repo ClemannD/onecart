@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { CategoryIconNames } from 'src/app/constants/category-icons';
 import { Category } from 'src/app/models/category.model';
 import { CategoriesService } from 'src/app/services/categories.service';
@@ -45,6 +45,15 @@ import { CategoriesService } from 'src/app/services/categories.service';
                 Save Category
             </app-button>
             <app-button
+                *ngIf="category.categoryKey"
+                fill="clear"
+                color="danger"
+                [style.marginBottom]="'2rem'"
+                (buttonClick)="deleteCategory()"
+            >
+                Delete Category
+            </app-button>
+            <app-button
                 color="secondary"
                 fill="clear"
                 (buttonClick)="closeModal()"
@@ -65,7 +74,8 @@ export class CategoryModalComponent implements OnInit {
     constructor(
         private _categoriesService: CategoriesService,
         private _modalController: ModalController,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _alertController: AlertController
     ) {}
 
     ngOnInit() {
@@ -91,6 +101,36 @@ export class CategoryModalComponent implements OnInit {
             });
             this.closeModal();
         }
+    }
+
+    public async deleteCategory(): Promise<void> {
+        const alert = await this._alertController.create({
+            header: 'Delete Category',
+            message: `Are you sure you want to delete the ${this.category.categoryName} category? This will also delete all items in this category.`,
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        alert.dismiss();
+                    }
+                },
+                {
+                    text: 'Delete',
+                    handler: async () => {
+                        this._categoriesService.deleteCategory(
+                            this.category.categoryKey
+                        );
+
+                        alert.dismiss();
+                        this.closeModal();
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
     public updateCategoryIcon(iconName: string): void {

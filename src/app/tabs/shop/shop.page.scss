@@ -5,7 +5,10 @@
     margin-top: 2rem;
     background-color: $grey-lightest;
     border-radius: 10px;
+    border: 1px solid $grey-blue-light;
+    box-shadow: $shadow-light;
 }
+
 .no-items {
     height: 10rem;
     width: 100%;

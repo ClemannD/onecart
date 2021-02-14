@@ -39,6 +39,11 @@ ion-button {
         --color-hover: $blue-light;
     }
 
+    &.danger.clear {
+        color: $red;
+        --color-hover: $red-highlight;
+    }
+
     &.secondary.clear {
         color: $grey-blue;
         --color-hover: $grey;

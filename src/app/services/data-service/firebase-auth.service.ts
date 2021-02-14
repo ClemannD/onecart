@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, pipe, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 import { WindowService } from '../window.service';
 import {

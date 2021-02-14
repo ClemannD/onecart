@@ -11,10 +11,12 @@
     flex-direction: column;
     cursor: pointer;
     border: 1px solid $grey-lightest;
+    border: 1px solid $grey-blue-light;
+    box-shadow: $shadow-light;
     transition: border 0.4s $ease-out-quart;
 
     &:hover {
-        border: 1px solid $grey-blue-light;
+        border: 1px solid $grey-blue;
     }
 
     ion-icon {
