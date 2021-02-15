@@ -45,7 +45,7 @@ import { CategoriesService } from 'src/app/services/categories.service';
                 Save Category
             </app-button>
             <app-button
-                *ngIf="category.categoryKey"
+                *ngIf="category?.categoryKey"
                 fill="clear"
                 color="danger"
                 [style.marginBottom]="'2rem'"
