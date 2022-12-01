@@ -23,6 +23,8 @@ npm-debug.log*
 /.sourcemaps
 /.versions
 /.vscode
+/build
+/.firebase
 /coverage
 /dist
 /node_modules
